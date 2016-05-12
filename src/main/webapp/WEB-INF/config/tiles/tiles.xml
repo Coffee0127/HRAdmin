@@ -1,0 +1,17 @@
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<!-- 基礎樣板提供繼承 -->
+	<definition name="base.layout" template="/WEB-INF/pages/layout/template.jsp">
+		<put-attribute name="title" value="HR Admin Template" />
+		<put-attribute name="header" value="/WEB-INF/pages/layout/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/pages/layout/menu.jsp" />
+		<put-attribute name="content" value="" />
+	</definition>
+
+	<!-- Index definition -->
+	<definition name="tilesIndex" extends="base.layout">
+		<put-attribute name="title" value="HR Admin Index" />
+		<put-attribute name="content" value="/WEB-INF/pages/index.jsp" />
+	</definition>
+
+</tiles-definitions>

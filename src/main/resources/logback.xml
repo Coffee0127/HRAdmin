@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="LOG_HOME" value="c:/myLog" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned by default the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+        <!-- encoder 對日誌進行格式化 -->
+        <encoder>
+            <pattern>
+                [%d{yyyy-MM-dd HH:mm:ss}][%-5level][%thread][%logger.%method] %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- The level of the root level is set to DEBUG by default. -->
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </root>
+    
+    <!-- 其他framework過濾, 避免被log洗頻 -->
+    <logger name="org.hibernate" level="WARN" />  
+    <logger name="org.springframework" level="WARN" />  
+    <logger name="com.opensymphony" level="WARN" />  
+    <logger name="org.apache" level="WARN" /> 
+
+    <!-- Hibernate專門設定 -->
+    <!-- 參數填入的值 -->
+<!--     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" /> -->
+    <!-- 資料對應哪個屬性(欄位) -->
+<!--     <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE" /> -->
+    <!-- 執行時期的SQL -->
+    <logger name="org.hibernate.SQL" level="DEBUG" />
+    <logger name="org.hibernate.engine.QueryParameters" level="DEBUG" />
+    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG" />
+    
+</configuration>
