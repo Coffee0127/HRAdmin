@@ -21,25 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.test.common.annotation;
+package com.bxf.hradmin.admin.repositories;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import com.bxf.hradmin.admin.model.CodeType;
+import com.bxf.hradmin.admin.model.CodeTypePK;
 
 /**
- * NonTransactional
+ * CodeTypeRepository
  *
- * @since 2016-05-07
+ * @since 2016-05-12
  * @author Bo-Xuan Fan
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Inherited
-@Documented
-public @interface NonTransactional {
+public interface CodeTypeRepository extends JpaSpecificationExecutor<CodeType>,
+        JpaRepository<CodeType, CodeTypePK> {
 
 }

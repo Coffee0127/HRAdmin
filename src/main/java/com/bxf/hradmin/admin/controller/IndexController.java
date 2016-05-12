@@ -21,20 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.test.admin.repositories;
+package com.bxf.hradmin.admin.controller;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-
-import com.bxf.test.admin.model.SysParam;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
- * SysparamRepository
+ * IndexController
  *
- * @since 2016-05-07
+ * @since 2016-05-11
  * @author Bo-Xuan Fan
  */
-public interface SysParamRepository extends JpaSpecificationExecutor<SysParam>,
-        JpaRepository<SysParam, String> {
+@Controller
+public class IndexController {
 
+    @RequestMapping({ "/index.html", "/", "/index", "/index.jsp" })
+    public ModelAndView index() {
+        return new ModelAndView("tilesIndex");
+    }
+
+    @RequestMapping("/loginPage")
+    public String loginPage() {
+        return "login";
+    }
 }

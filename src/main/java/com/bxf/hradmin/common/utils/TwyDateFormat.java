@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.test.common.utils;
+package com.bxf.hradmin.common.utils;
 
 import java.text.FieldPosition;
 import java.text.ParsePosition;

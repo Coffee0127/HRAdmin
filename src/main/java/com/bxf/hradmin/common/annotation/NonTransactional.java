@@ -21,28 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.test.admin.controller;
+package com.bxf.hradmin.common.annotation;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * IndexController
+ * NonTransactional
  *
- * @since 2016-05-11
+ * @since 2016-05-07
  * @author Bo-Xuan Fan
  */
-@Controller
-public class IndexController {
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Documented
+public @interface NonTransactional {
 
-    @RequestMapping({ "/index.html", "/", "/index", "/index.jsp" })
-    public ModelAndView index() {
-        return new ModelAndView("tilesIndex");
-    }
-
-    @RequestMapping("/loginPage")
-    public String loginPage() {
-        return "login";
-    }
 }

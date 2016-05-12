@@ -57,10 +57,10 @@
 
     <aop:aspectj-autoproxy proxy-target-class="true" />
     <aop:config proxy-target-class="true">
-        <aop:pointcut id="servicePointcut" expression="execution(* com..service.*.*(..)) and !@annotation(com.bxf.test.common.annotation.NonTransactional)" />
+        <aop:pointcut id="servicePointcut" expression="execution(* com..service.*.*(..)) and !@annotation(com.bxf.hradmin.common.annotation.NonTransactional)" />
 
         <aop:advisor advice-ref="txAdvice" pointcut-ref="servicePointcut" />
     </aop:config>
 
-    <jpa:repositories base-package="com.bxf.test.admin.repositories" />
+    <jpa:repositories base-package="com.bxf.hradmin.admin.repositories" />
 </beans>

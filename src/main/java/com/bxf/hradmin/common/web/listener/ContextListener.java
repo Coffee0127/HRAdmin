@@ -21,33 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.test.common.constant;
+package com.bxf.hradmin.common.web.listener;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 /**
- * 案件狀態常數
+ * ContextListener
  *
- * @since 2016-05-08
+ * @since 2016-05-11
  * @author Bo-Xuan Fan
  */
-public final class CaseConstants {
+public class ContextListener implements ServletContextListener {
 
-    /** 已收件狀態 **/
-    public static final String RECEIVED_CASE_STATUS = "01";
-    /** 已申請狀態 **/
-    public static final String PASSED_CASE_STATUS = "02";
-    /** 未通過狀態 **/
-    public static final String UNPASSED_CASE_STATUS = "03";
-    /** 已回覆狀態 **/
-    public static final String RESPONSE_CASE_STATUS = "04";
-    /** 處理中狀態 **/
-    public static final String HANDLING_CASE_STATUS = "05";
-    /** 已結案狀態 **/
-    public static final String CLOSE_CASE_STATUS = "10";
-    /** 案件異常狀態 **/
-    public static final String EXCEPTION_CASE_STATUS = "97";
-    /** 放棄申請狀態 **/
-    public static final String DISPOSED_CASE_STATUS = "98";
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        ServletContext servletContext = sce.getServletContext();
+        servletContext.setAttribute("ctxPath", servletContext.getContextPath());
+    }
 
-    private CaseConstants() {
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
     }
 }
