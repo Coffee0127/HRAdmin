@@ -1,0 +1,4 @@
+INSERT INTO CFG_SYSPARAM (paramId, paramValue, paramDesc, updateUser, updateTime) VALUES ('SOURCE_FILE_PATH', 'D:\src.xlsx', '來源檔案', 'system','2016-05-07 16:30:00.000');
+INSERT INTO CFG_SYSPARAM (paramId, paramValue, paramDesc, updateUser, updateTime) VALUES ('OUTPUT_FILE_PATH', 'D:\output.xlsx', '目的檔案', 'system','2016-05-07 16:30:00.000');
+INSERT INTO CFG_SYSPARAM (paramId, paramValue, paramDesc, updateUser, updateTime) VALUES ('IGNORE_SHEETS', '', '略過不讀取之 sheet 名稱, 以","分隔', 'system','2016-05-07 16:30:00.000');
+INSERT INTO CFG_SYSPARAM (paramId, paramValue, paramDesc, updateUser, updateTime) VALUES ('IS_DISPLAY_SOURCE_SHEET', '1', '是否顯示來源Sheet名稱(0:不顯示, 1:顯示)', 'system','2016-05-07 16:30:00.000');
