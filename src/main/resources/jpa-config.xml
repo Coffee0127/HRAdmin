@@ -17,9 +17,8 @@
     <!-- JDBC 封裝 DataSource -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.h2.Driver" />
-<!--         <property name="url" value="jdbc:h2:~/h2-hrdb" /> -->
-        <property name="url" value="jdbc:h2:tcp://localhost/~/h2-hrdb" />
-        <property name="username" value="admin" />
+        <property name="url" value="jdbc:h2:~/h2-hrdb" />
+        <property name="username" value="sa" />
         <property name="password" value="" />
     </bean>
 
