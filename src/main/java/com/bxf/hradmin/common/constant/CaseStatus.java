@@ -29,25 +29,32 @@ package com.bxf.hradmin.common.constant;
  * @since 2016-05-08
  * @author Bo-Xuan Fan
  */
-public final class CaseConstants {
+public enum CaseStatus {
 
     /** 已收件狀態 **/
-    public static final String RECEIVED_CASE_STATUS = "01";
+    RECEIVED_CASE_STATUS("01"),
     /** 已申請狀態 **/
-    public static final String PASSED_CASE_STATUS = "02";
+    PASSED_CASE_STATUS("02"),
     /** 未通過狀態 **/
-    public static final String UNPASSED_CASE_STATUS = "03";
+    UNPASSED_CASE_STATUS("03"),
     /** 已回覆狀態 **/
-    public static final String RESPONSE_CASE_STATUS = "04";
+    RESPONSE_CASE_STATUS("04"),
     /** 處理中狀態 **/
-    public static final String HANDLING_CASE_STATUS = "05";
+    HANDLING_CASE_STATUS("05"),
     /** 已結案狀態 **/
-    public static final String CLOSE_CASE_STATUS = "10";
+    CLOSE_CASE_STATUS("10"),
     /** 案件異常狀態 **/
-    public static final String EXCEPTION_CASE_STATUS = "97";
+    EXCEPTION_CASE_STATUS("97"),
     /** 放棄申請狀態 **/
-    public static final String DISPOSED_CASE_STATUS = "98";
+    DISPOSED_CASE_STATUS("98");
 
-    private CaseConstants() {
+    private String code;
+
+    CaseStatus(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
     }
 }
