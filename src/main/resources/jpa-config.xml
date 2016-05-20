@@ -20,7 +20,7 @@
 <!--         <property name="url" value="jdbc:h2:~/h2-hrdb" /> -->
         <property name="url" value="jdbc:h2:tcp://localhost/~/h2-hrdb" />
         <property name="username" value="admin" />
-        <property name="password" value="hradmin@iisi" />
+        <property name="password" value="" />
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
