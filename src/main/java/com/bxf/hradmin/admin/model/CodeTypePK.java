@@ -44,7 +44,7 @@ public class CodeTypePK implements Serializable {
     private String codeId;
 
     @Column(length = 32)
-    private String codeType;
+    private String codeCat;
 
     public String getCodeId() {
         return codeId;
@@ -54,12 +54,12 @@ public class CodeTypePK implements Serializable {
         this.codeId = codeId;
     }
 
-    public String getCodeType() {
-        return codeType;
+    public String getCodeCat() {
+        return codeCat;
     }
 
-    public void setCodeType(String codeType) {
-        this.codeType = codeType;
+    public void setCodeCat(String codeCat) {
+        this.codeCat = codeCat;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class CodeTypePK implements Serializable {
         int result = 1;
         result = prime * result + ((codeId == null) ? 0 : codeId.hashCode());
         result = prime * result
-                + ((codeType == null) ? 0 : codeType.hashCode());
+                + ((codeCat == null) ? 0 : codeCat.hashCode());
         return result;
     }
 
@@ -91,11 +91,11 @@ public class CodeTypePK implements Serializable {
         } else if (!codeId.equals(other.codeId)) {
             return false;
         }
-        if (codeType == null) {
-            if (other.codeType != null) {
+        if (codeCat == null) {
+            if (other.codeCat != null) {
                 return false;
             }
-        } else if (!codeType.equals(other.codeType)) {
+        } else if (!codeCat.equals(other.codeCat)) {
             return false;
         }
         return true;

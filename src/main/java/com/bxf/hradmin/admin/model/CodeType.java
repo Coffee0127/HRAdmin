@@ -29,7 +29,6 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  * CodeType
@@ -38,7 +37,7 @@ import javax.persistence.UniqueConstraint;
  * @author Bo-Xuan Fan
  */
 @Entity
-@Table(name = "CFG_CODETYPE", uniqueConstraints = @UniqueConstraint(columnNames = { "codeType", "codeValue" }) )
+@Table(name = "CFG_CODETYPE")
 public class CodeType {
 
     @EmbeddedId
@@ -71,12 +70,12 @@ public class CodeType {
         codeTypePK.setCodeId(codeId);
     }
 
-    public String getCodeType() {
-        return codeTypePK.getCodeType();
+    public String getCodeCat() {
+        return codeTypePK.getCodeCat();
     }
 
-    public void setCodeType(String codeType) {
-        codeTypePK.setCodeType(codeType);
+    public void setCodeCat(String Cat) {
+        codeTypePK.setCodeCat(Cat);
     }
 
     public String getCodeValue() {

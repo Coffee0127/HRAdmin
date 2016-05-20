@@ -21,30 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.repositories;
+package com.bxf.hradmin.admin.service;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
 import com.bxf.hradmin.admin.model.CodeType;
-import com.bxf.hradmin.admin.model.CodeTypePK;
 
 /**
- * CodeTypeRepository
+ * CodeTypeService
  *
- * @since 2016-05-12
+ * @since 2016-05-13
  * @author Bo-Xuan Fan
  */
-public interface CodeTypeRepository extends JpaSpecificationExecutor<CodeType>,
-        JpaRepository<CodeType, CodeTypePK> {
+public interface CodeTypeService {
 
-    @Query(value = "SELECT * FROM CFG_CODETYPE c WHERE c.codeCat = :codeCat", nativeQuery = true)
-    List<CodeType> findByCodeCat(@Param("codeCat") String codeCat);
+    List<CodeType> findByCodeType(String codeType);
 
-    @Query(value = "SELECT c FROM CodeType c WHERE c.codeTypePK.codeId LIKE CONCAT('%', :codeId, '%') AND c.codeTypePK.codeCat = :codeCat")
-    List<CodeType> findByCodeIdLike(@Param("codeId") String codeId, @Param("codeCat") String codeCat);
+    List<CodeType> findByCodeIdAndCodeCat(String codeId, String codeCat);
 }

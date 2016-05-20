@@ -21,30 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.repositories;
-
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import com.bxf.hradmin.admin.model.CodeType;
-import com.bxf.hradmin.admin.model.CodeTypePK;
+package com.bxf.hradmin.common.constant;
 
 /**
- * CodeTypeRepository
+ * CodeTypeConstants
  *
- * @since 2016-05-12
+ * @since 2016-05-17
  * @author Bo-Xuan Fan
  */
-public interface CodeTypeRepository extends JpaSpecificationExecutor<CodeType>,
-        JpaRepository<CodeType, CodeTypePK> {
+public final class CodeTypeConstants {
 
-    @Query(value = "SELECT * FROM CFG_CODETYPE c WHERE c.codeCat = :codeCat", nativeQuery = true)
-    List<CodeType> findByCodeCat(@Param("codeCat") String codeCat);
+    /** 案件狀態 */
+    public static final String CASE_STATUS_CAT = "CaseStatusCat";
+    /** 部門代碼 */
+    public static final String DEPT_CAT = "DeptCat";
+    /** 單位代碼 */
+    public static final String UNIT_CAT = "UnitCat";
+    /** 人力角色代碼 */
+    public static final String HRM_ROLE_CAT = "HrmRoleCat";
+    /** 人員類別代碼 */
+    public static final String HRM_TYPE_CAT = "HrmTypeCat";
 
-    @Query(value = "SELECT c FROM CodeType c WHERE c.codeTypePK.codeId LIKE CONCAT('%', :codeId, '%') AND c.codeTypePK.codeCat = :codeCat")
-    List<CodeType> findByCodeIdLike(@Param("codeId") String codeId, @Param("codeCat") String codeCat);
+    private CodeTypeConstants() {
+    }
 }
