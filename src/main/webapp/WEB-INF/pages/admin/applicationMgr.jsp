@@ -82,6 +82,7 @@ $(function() {
                .end().find('form')[0].reset();
             // clear previous validation
             $confirmForm.validationEngine('hideAll');
+            $caseModal.find('table.table div[data-field]').html('-');
             for (var key in caseMain) {
                 if (key == 'caseDetails') {
                     var $table = $caseModal.find('table#detailTable');
