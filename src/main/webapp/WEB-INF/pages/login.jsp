@@ -5,6 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Login Page</title>
+<link rel="SHORTCUT ICON" href="${ctxPath}/resources/images/icon.png"/>
 <link href="${ctxPath}/resources/lib/css/bootstrap.min.css" rel="stylesheet">
 <link href="${ctxPath}/resources/lib/css/styles.css" rel="stylesheet">
 <!--[if lt IE 9]>
