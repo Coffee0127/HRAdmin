@@ -143,6 +143,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <!-- for hot deploy -->
         <outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>
         <resources>
