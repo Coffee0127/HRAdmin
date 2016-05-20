@@ -4,6 +4,8 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
     <persistence-unit name="jpa-pu">
 
+        <class>com.bxf.hradmin.admin.model.CaseMain</class>
+        <class>com.bxf.hradmin.admin.model.CaseDetail</class>
         <class>com.bxf.hradmin.admin.model.CodeType</class>
         <class>com.bxf.hradmin.admin.model.CodeTypePK</class>
         <class>com.bxf.hradmin.admin.model.SysParam</class>
