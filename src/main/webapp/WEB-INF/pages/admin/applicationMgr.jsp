@@ -58,7 +58,7 @@ $(function() {
             params.activePage = params.offset / params.limit;
             return params;
         }
-    }).hideColumns([ 'skill', 'requiredBeginDate', 'requiredEndDate', 'reason', 'note' ]);
+    }).hideColumns([ 'requiredSkill', 'requiredBeginDate', 'requiredEndDate', 'reason', 'note' ]);
 
     var _caseId;
     $('#caseModal').on('show.bs.modal', function (event) {
@@ -134,7 +134,7 @@ $(function() {
                 if (msg.code == 0) {
                     hint('處理完畢!');
                 } else {
-                	error('系統異常!');
+                    error('系統異常!');
                 }
             });
         }
@@ -170,7 +170,7 @@ $(function() {
                         <th data-field="hrmRole" data-formatter="codeTypeFormatter" data-align="center">需求人力角色</th>
                         <th data-field="hrmType" data-formatter="codeTypeFormatter" data-align="center">需求人員類別</th>
                         <th data-field="requiredCount" data-align="center">需求人數</th>
-                        <th data-field="skill">Skill</th>
+                        <th data-field="requiredSkill">Skill</th>
                         <th data-field="requiredBeginDate" data-align="center">人力需求起日</th>
                         <th data-field="requiredEndDate" data-align="center">人力需求迄日</th>
                         <th data-field="reason">增補原因</th>
@@ -239,7 +239,7 @@ $(function() {
                                     </tr>
                                     <tr>
                                         <td class="col-md-4">Skill</td>
-                                        <td class="col-md-8"><div data-field="skill"></div></td>
+                                        <td class="col-md-8"><div data-field="requiredSkill"></div></td>
                                     </tr>
                                     <tr>
                                         <td class="col-md-4">人力需求起日</td>
