@@ -29,12 +29,15 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bxf.hradmin.admin.dto.CaseMainDto;
@@ -48,6 +51,7 @@ import com.bxf.hradmin.admin.service.CaseMgrService;
  */
 @Controller
 @RequestMapping("/apply")
+@Scope(WebApplicationContext.SCOPE_REQUEST)
 public class ApplyController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplyController.class);
@@ -68,7 +72,7 @@ public class ApplyController {
         return new ModelAndView("applicationMgr");
     }
 
-    @RequestMapping("/submit")
+    @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public ModelAndView submit(@ModelAttribute("caseMain") CaseMainDto caseMain, Model model) {
         model.addAttribute("caseMain", caseMain);
         service.saveCaseMain(caseMain);
