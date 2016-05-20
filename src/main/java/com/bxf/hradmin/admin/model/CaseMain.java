@@ -31,6 +31,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * CaseMain
@@ -79,10 +81,12 @@ public class CaseMain {
     private String requiredSkill;
     /** 人力需求起日(YYYY/MM/DD) */
     @Column(name = "REQUIRED_BEGIN_DATE")
-    private java.sql.Date requiredBeginDate;
+    @Temporal(TemporalType.DATE)
+    private Date requiredBeginDate;
     /** 人力需求訖日(YYYY/MM/DD) */
     @Column(name = "REQUIRED_END_DATE")
-    private java.sql.Date requiredEndDate;
+    @Temporal(TemporalType.DATE)
+    private Date requiredEndDate;
     /** 增補原因 */
     @Column(name = "REASON")
     private String reason;
@@ -184,19 +188,19 @@ public class CaseMain {
         this.requiredSkill = requiredSkill;
     }
 
-    public java.sql.Date getRequiredBeginDate() {
+    public Date getRequiredBeginDate() {
         return requiredBeginDate;
     }
 
-    public void setRequiredBeginDate(java.sql.Date requiredBeginDate) {
+    public void setRequiredBeginDate(Date requiredBeginDate) {
         this.requiredBeginDate = requiredBeginDate;
     }
 
-    public java.sql.Date getRequiredEndDate() {
+    public Date getRequiredEndDate() {
         return requiredEndDate;
     }
 
-    public void setRequiredEndDate(java.sql.Date requiredEndDate) {
+    public void setRequiredEndDate(Date requiredEndDate) {
         this.requiredEndDate = requiredEndDate;
     }
 

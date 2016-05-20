@@ -61,10 +61,10 @@ public class CaseMainDto {
     private String requiredSkill;
     /** 人力需求起日(YYYY/MM/DD) */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private java.sql.Date requiredBeginDate;
+    private Date requiredBeginDate;
     /** 人力需求訖日(YYYY/MM/DD) */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private java.sql.Date requiredEndDate;
+    private Date requiredEndDate;
     /** 增補原因 */
     private String reason;
     /** 備註 */
@@ -164,19 +164,19 @@ public class CaseMainDto {
         this.requiredSkill = requiredSkill;
     }
 
-    public java.sql.Date getRequiredBeginDate() {
+    public Date getRequiredBeginDate() {
         return requiredBeginDate;
     }
 
-    public void setRequiredBeginDate(java.sql.Date requiredBeginDate) {
+    public void setRequiredBeginDate(Date requiredBeginDate) {
         this.requiredBeginDate = requiredBeginDate;
     }
 
-    public java.sql.Date getRequiredEndDate() {
+    public Date getRequiredEndDate() {
         return requiredEndDate;
     }
 
-    public void setRequiredEndDate(java.sql.Date requiredEndDate) {
+    public void setRequiredEndDate(Date requiredEndDate) {
         this.requiredEndDate = requiredEndDate;
     }
 
