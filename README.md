@@ -9,8 +9,12 @@ Simple application for HR convience :)
  * Basic AAA (Authentication, Authorization, and Accounting)
  * Audit Log
 
-### Implementation list:
+### Front end:
+ * jQuery v1.11.1
+ * Bootstrap v3.2.0
+ * Underscore.js 1.8.3
 
+### Back end:
  * Java 8
  * SpringData with JPA
  * H2 Database
