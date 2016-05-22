@@ -1,4 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<script src="${ctxPath}/resources/lib/js/bootstrap-datepicker.js"></script>
+<script src="${ctxPath}/resources/lib/js/chart.min.js"></script>
+<script src="${ctxPath}/resources/lib/js/chart-data.js"></script>
+<script src="${ctxPath}/resources/lib/js/easypiechart.js"></script>
+<script src="${ctxPath}/resources/lib/js/easypiechart-data.js"></script>
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">Dashboard</h1>
