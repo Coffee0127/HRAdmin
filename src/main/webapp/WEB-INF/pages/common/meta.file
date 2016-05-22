@@ -15,11 +15,6 @@
 <script src="${ctxPath}/resources/lib/js/underscore-1.8.3.min.js"></script>
 <script src="${ctxPath}/resources/lib/js/jquery-1.11.1.min.js"></script>
 <script src="${ctxPath}/resources/lib/js/bootstrap.min.js"></script>
-<script src="${ctxPath}/resources/lib/js/bootstrap-datepicker.js"></script>
-<script src="${ctxPath}/resources/lib/js/chart.min.js"></script>
-<script src="${ctxPath}/resources/lib/js/chart-data.js"></script>
-<script src="${ctxPath}/resources/lib/js/easypiechart.js"></script>
-<script src="${ctxPath}/resources/lib/js/easypiechart-data.js"></script>
 <script src="${ctxPath}/codeType/codeMap.js"></script>
 <script>
 var ctxPath = '${ctxPath}';
