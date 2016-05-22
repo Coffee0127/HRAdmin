@@ -28,5 +28,17 @@
         <%-- Content --%>
         <tiles:insertAttribute name="content" />
     </div><!--/.main-->
+
+    <!-- hint Modal -->
+    <div id="hintModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel" style="z-index: 1070;">
+        <div class="modal-dialog" role="document">
+            <div class="alert alert-success alert-dismissible fade in collapse" role="alert">
+                <svg class="glyph stroked checkmark"><use xlink:href="#stroked-checkmark"></use></svg> <span class="msg"></span> <a href="#" class="close pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade in collapse" role="alert">
+                <svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> <span class="msg"></span> <a href="#" class="close pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
