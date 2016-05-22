@@ -14,10 +14,10 @@ $(function() {
                 $modalBackdrop.css('z-index', parseInt($modalBackdrop.prev().css('z-index')) + 20);
             }
         },
-        hint: function(msg) {
+        showHintMessage: function(msg) {
             _popHint(msg, 'success');
         },
-        error: function(msg) {
+        showErrorMessage: function(msg) {
             _popHint(msg, 'danger');
         }
     });
