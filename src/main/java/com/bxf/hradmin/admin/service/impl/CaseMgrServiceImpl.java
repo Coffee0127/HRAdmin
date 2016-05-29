@@ -63,7 +63,7 @@ public class CaseMgrServiceImpl implements CaseMgrService {
 
     @Override
     public void saveCaseMain(CaseMainDto caseMain) {
-        caseMain.setApplier(UserUtils.getUser().getUserName());
+        caseMain.setApplier(UserUtils.getUser().getName());
         Date updateDatetime = new Date();
         caseMain.setUpdateDatetime(updateDatetime);
         caseMain.setCaseStatus(CaseStatus.RECEIVED_CASE_STATUS.getCode());

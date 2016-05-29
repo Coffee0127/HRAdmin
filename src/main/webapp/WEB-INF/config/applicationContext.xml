@@ -13,4 +13,5 @@
        
     <import resource="classpath:beans-config.xml"/>
     <import resource="mvc-config.xml"/>
+    <import resource="spring-security-ldap.xml"/>
 </beans>

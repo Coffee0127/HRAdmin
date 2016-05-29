@@ -23,8 +23,18 @@
  */
 package com.bxf.hradmin.common.web.utils;
 
-import org.springframework.security.core.AuthenticationException;
+import javax.naming.ldap.LdapName;
+import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.ldap.support.LdapUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.bxf.hradmin.aamgr.dto.IUser;
 import com.bxf.hradmin.aamgr.dto.UserDto;
 
 /**
@@ -44,11 +54,34 @@ public final class UserUtils {
      * @return user object
      * @throws AuthenticationException
      */
-    public static UserDto getUser() throws AuthenticationException {
-        // TODO get user from Spring Security
-        UserDto userDto = new UserDto();
-        userDto.setUserName("王曉明");
-        userDto.setUserIp("192.168.57.21");
-        return userDto;
+    public static IUser getUser() throws AuthenticationException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDto user = null;
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (principal != null) {
+                user = new UserDto();
+                user.setSourceIp(getUserSourceIp());
+                // xml defined user
+                /*if (principal instanceof org.springframework.security.core.userdetails.User) {
+                }*/
+
+                if (principal instanceof LdapUserDetails) {
+                    LdapUserDetails ldapUserDetails = (LdapUserDetails) principal;
+                    String dn = ldapUserDetails.getDn();
+                    LdapName ldapName = LdapUtils.newLdapName(dn);
+                    String userName = String.valueOf(LdapUtils.getValue(ldapName, "cn"));
+                    user.setName(userName);
+                    user.setAccount(ldapUserDetails.getUsername());
+                }
+            }
+        }
+        return user;
+    }
+
+    private static String getUserSourceIp() {
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        return request.getRemoteAddr();
     }
 }

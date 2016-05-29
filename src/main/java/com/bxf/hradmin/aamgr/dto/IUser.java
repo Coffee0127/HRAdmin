@@ -24,67 +24,56 @@
 package com.bxf.hradmin.aamgr.dto;
 
 /**
- * UserDto
+ * IUser
  *
- * @since 2016-05-12
+ * @since 2016-05-28
  * @author Bo-Xuan Fan
  */
-public class UserDto implements IUser {
+public interface IUser {
 
     /**
-     * 使用者姓名
+     * 取得使用者帳號
+     * @return
      */
-    private String name;
-    /**
-     * 使用者帳號
-     */
-    private String account;
-    /**
-     * 使用者登入ip
-     */
-    private String sourceIp;
+    String getAccount();
 
     /**
-     * 帳號狀態
+     * 取得使用者姓名
+     * @return
      */
-    private String status;
+    String getName();
 
-    @Override
-    public String getName() {
-        return name;
-    }
+    /**
+     * 帳號是否啟用
+     * @return
+     */
+    UserStatus getUserStatus();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    enum UserStatus {
+        /** 啟用 */
+        ENABLE("Y"),
+        /** 未啟用 */
+        DISABLE("N"),
+        /** 鎖定 */
+        LOCKED("L");
 
-    @Override
-    public String getAccount() {
-        return account;
-    }
+        String code;
 
-    public void setAccount(String account) {
-        this.account = account;
-    }
+        UserStatus(String code) {
+            this.code = code;
+        }
 
-    public String getSourceIp() {
-        return sourceIp;
-    }
+        public String getCode() {
+            return code;
+        }
 
-    public void setSourceIp(String sourceIp) {
-        this.sourceIp = sourceIp;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @Override
-    public UserStatus getUserStatus() {
-        return UserStatus.transformCode(status);
+        public static UserStatus transformCode(String code) {
+            for (UserStatus status : values()) {
+                if (status.code.equals(code)) {
+                    return status;
+                }
+            }
+            throw new IllegalArgumentException("Unknown code: " + code);
+        }
     }
 }

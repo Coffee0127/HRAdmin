@@ -21,70 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.aamgr.dto;
+package com.bxf.hradmin.security;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.ldap.core.DirContextOperations;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
- * UserDto
+ * LdapAuthoritiesPopulator
  *
- * @since 2016-05-12
+ * @since 2016-05-22
  * @author Bo-Xuan Fan
  */
-public class UserDto implements IUser {
-
-    /**
-     * 使用者姓名
-     */
-    private String name;
-    /**
-     * 使用者帳號
-     */
-    private String account;
-    /**
-     * 使用者登入ip
-     */
-    private String sourceIp;
-
-    /**
-     * 帳號狀態
-     */
-    private String status;
+public class LdapAuthoritiesPopulator implements org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator {
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getSourceIp() {
-        return sourceIp;
-    }
-
-    public void setSourceIp(String sourceIp) {
-        this.sourceIp = sourceIp;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @Override
-    public UserStatus getUserStatus() {
-        return UserStatus.transformCode(status);
+    public Collection<? extends GrantedAuthority> getGrantedAuthorities (
+            DirContextOperations userData, String username) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorities;
     }
 }
