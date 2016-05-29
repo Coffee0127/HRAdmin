@@ -17,6 +17,10 @@
 #caseTable>tbody>tr>td, .editTable>tbody>tr>td {
     vertical-align: middle;
 }
+#caseTable>tbody>tr.edited>td {
+    background: #d9edf7;
+    border-color: #d9edf7;
+}
 
 .editTable textarea {
     resize: vertical;
@@ -52,25 +56,29 @@ $(function() {
         showToggle: true,
         pagination: true,
         showColumns: true,
+        uniqueId: 'caseId',
         sidePagination: 'server',
-        url: url('/apply/find'),
+        url: url('/headcount/find'),
         queryParams: function(params) {
             params.activePage = params.offset / params.limit;
             return params;
         }
     }).hideColumns([ 'requiredSkill', 'requiredBeginDate', 'requiredEndDate', 'reason', 'note' ]);
 
-    var _caseId;
+    var _editedCaseId, _$editedCaseRow;
     $('#caseModal').on('show.bs.modal', function (event) {
         var $this = $(this),
             $button = $(event.relatedTarget);
-        _caseId = $button.data('caseId');
-        $this.find('.modal-title span').html(_caseId);
+        _$editedCaseRow = $button.parents('tr');
+        $('tr.edited').removeClass('edited');
+        $button.one('focus', function(e){$(this).blur();});
+        _editedCaseId = $button.data('caseId');
+        $this.find('.modal-title span').html(_editedCaseId);
         $.ajax({
-            url: url('/apply/findOne'),
+            url: url('/headcount/findOne'),
             type: 'post',
             data: {
-                caseId: _caseId
+                caseId: _editedCaseId
             }
         })
         .done(function(caseMain) {
@@ -107,8 +115,7 @@ $(function() {
             }
         })
         .fail(function() {
-            // TODO
-            console.log('query fail');
+        	showErrorMessage('query fail');
         });
     });
     
@@ -124,17 +131,25 @@ $(function() {
     $('#btnConfirm').on('click', function() {
         if ($confirmForm.validationEngine('validate')) {
             $.ajax({
-                url: url('/apply/confirm'),
+                url: url('/headcount/confirm'),
                 type: 'post',
                 data: $.extend({}, $confirmForm.serializeObject(), {
-                    caseId: _caseId
+                    caseId: _editedCaseId
                 })
             })
             .done(function(msg) {
                 if (msg.code == 0) {
-                    hint('處理完畢!');
+                	showHintMessage('處理完畢!');
+                	// update the caseTable
+                	$('#caseTable').bootstrapTable('updateByUniqueId', {
+                		id: _editedCaseId,
+                		row: JSON.parse(msg.desc)
+                	}).find('tr[data-uniqueid="' + _editedCaseId + '"]').addClass('edited');
+                    setTimeout(function() {
+                    	$('.modal').modal('hide');
+                    }, 1500);
                 } else {
-                    error('系統異常!');
+                	showErrorMessage('系統異常：' + msg.desc);
                 }
             });
         }
@@ -143,17 +158,6 @@ $(function() {
     });
 });
 </script>
-<!-- hint Modal -->
-<div class="modal fade" id="hintModal" tabindex="1" role="dialog" aria-labelledby="caseModalLabel" style="z-index: 1070;">
-    <div class="modal-dialog" role="document">
-        <div class="alert alert-success alert-dismissible fade in collapse" role="alert">
-            <svg class="glyph stroked checkmark"><use xlink:href="#stroked-checkmark"></use></svg> <span class="msg"></span> <a href="#" class="close pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a>
-        </div>
-        <div class="alert alert-danger alert-dismissible fade in collapse" role="alert">
-            <svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> <span class="msg"></span> <a href="#" class="close pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a>
-        </div>
-    </div>
-</div>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -184,7 +188,7 @@ $(function() {
     </div>
 </div><!--/.row-->
 <!-- Modal -->
-<div class="modal fade" id="caseModal" tabindex="-1" role="dialog" aria-labelledby="caseModalLabel">
+<div id="caseModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="caseModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -294,7 +298,7 @@ $(function() {
                 </div><!--/.panel-->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="p-r-5 glyphicon glyphicon-remove"></span>Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="p-r-5 glyphicon glyphicon-remove"></span>關閉</button>
             </div>
         </div>
     </div>

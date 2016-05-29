@@ -17,8 +17,8 @@ $(function() {
                 <svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg> 員額申請
             </a>
             <ul class="children collapse in" id="sub-apply">
-                <li><a href="${ctxPath}/apply/applicationMgr"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> 申請總覽</a></li>
-                <li><a href="${ctxPath}/apply/applicationPage"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg> 提出申請</a></li>
+                <li><a href="${ctxPath}/headcount/view"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> 申請總覽</a></li>
+                <li><a href="${ctxPath}/headcount/apply"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg> 提出申請</a></li>
             </ul>
         </li>
         <li><a href="${ctxPath}/"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>

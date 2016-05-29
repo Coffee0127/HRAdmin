@@ -44,39 +44,39 @@ import com.bxf.hradmin.admin.dto.CaseMainDto;
 import com.bxf.hradmin.admin.service.CaseMgrService;
 
 /**
- * ApplyController
+ * HeadcountController
  *
  * @since 2016-05-12
  * @author Bo-Xuan Fan
  */
 @Controller
-@RequestMapping("/apply")
+@RequestMapping("/headcount")
 @Scope(WebApplicationContext.SCOPE_REQUEST)
-public class ApplyController {
+public class HeadcountController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplyController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HeadcountController.class);
 
     @Autowired
     private CaseMgrService service;
 
-    @RequestMapping("/applicationPage")
+    @RequestMapping("/apply")
     public ModelAndView index(Model model) {
         CaseMainDto caseMain = new CaseMainDto();
         caseMain.setRequiredBeginDate(new java.sql.Date(new Date().getTime()));
         model.addAttribute("caseMain", caseMain);
-        return new ModelAndView("applicationPage");
+        return new ModelAndView("apply");
     }
 
-    @RequestMapping("/applicationMgr")
+    @RequestMapping("/view")
     public ModelAndView manager(Model model) {
-        return new ModelAndView("applicationMgr");
+        return new ModelAndView("view");
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     public ModelAndView submit(@ModelAttribute("caseMain") CaseMainDto caseMain, Model model) {
         model.addAttribute("caseMain", caseMain);
         service.saveCaseMain(caseMain);
-        return new ModelAndView("applicationPage");
+        return new ModelAndView("apply");
     }
 
     @RequestMapping(value = "/find", produces = { "application/json; charset=UTF-8" })
@@ -97,12 +97,18 @@ public class ApplyController {
     public String confirm(@RequestParam("caseId") long caseId,
             @RequestParam(value = "confirm") String confirm,
             @RequestParam("msgDetail") String msgDetail) {
+        JSONObject result = new JSONObject();
         try {
             service.updateConfirmCase(caseId, confirm.equalsIgnoreCase("Y"), msgDetail);
-            return "{\"code\":0}";
+            result.put("code", 0);
+            CaseMainDto caseMain = service.findOne(caseId);
+            caseMain.setCaseDetails(null);
+            result.put("desc", caseMain);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return "{\"code\":-1}";
+            result.put("code", -1);
+            result.put("desc", e.getMessage());
         }
+        return result.toString();
     }
 }

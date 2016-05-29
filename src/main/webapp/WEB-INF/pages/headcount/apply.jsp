@@ -119,17 +119,17 @@ $(function() {
     });
 });
 </script>
-<form:form id="applicationForm" method="POST" action="${ctxPath}/apply/submit" commandName="caseMain" autocomplete="false">
+<form:form id="applicationForm" method="POST" action="${ctxPath}/headcount/submit" commandName="caseMain" autocomplete="false">
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">員額申請</div>
+                <div class="panel-heading">提出申請</div>
                 <div class="panel-body">
                     <div class="col-md-6">
                         <div class="form-group">
                             <div class="col-md-4">
                                 <label>填寫人</label>
-                                <div class="form-control"><%= com.bxf.hradmin.common.web.utils.UserUtils.getUser().getUserName() %></div>
+                                <div class="form-control"><%= com.bxf.hradmin.common.web.utils.UserUtils.getUser().getName() %></div>
                             </div>
                             <div class="col-md-4 required">
                                 <label>部門</label>
