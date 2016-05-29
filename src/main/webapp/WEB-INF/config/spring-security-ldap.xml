@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+    <http pattern="/resources/**" security="none" />
+
+    <http use-expressions="true">
+        <csrf disabled="true"/>
+        <intercept-url pattern="/loginPage" access="isAnonymous()" />
+        <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+        
+        <form-login login-page="/loginPage" login-processing-url="/login" 
+            authentication-failure-url="/loginPage?login_error=1" 
+            username-parameter="username" password-parameter="password" />
+            
+        <logout logout-success-url="/loginPage" />
+    </http>
+    
+    <authentication-manager>
+        <authentication-provider ref="ldapAuthProvider" />
+    </authentication-manager>
+    
+    <ldap-server id="ldapServer" ldif="classpath:ldif/test-server.ldif" port="10389" />
+    
+    <beans:bean id="ldapAuthProvider" class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
+        <beans:constructor-arg name="authenticator">
+            <beans:bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
+                <beans:constructor-arg name="contextSource" ref="ldapServer" />
+                <beans:property name="userDnPatterns">
+                    <beans:list>
+                        <beans:value>cn={0},ou=people</beans:value>
+                    </beans:list>
+                </beans:property>
+            </beans:bean>
+        </beans:constructor-arg>
+        <beans:constructor-arg name="authoritiesPopulator">
+            <beans:bean class="com.bxf.hradmin.security.LdapAuthoritiesPopulator" />
+        </beans:constructor-arg>
+    </beans:bean>
+</beans:beans>
