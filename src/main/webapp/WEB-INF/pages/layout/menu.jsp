@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
 $(function() {
-	var page = location.pathname.replace('${ctxPath}/', '').replace(/\/.*/, '');
-	$('#' + page).addClass('active');
+	var pathname = location.pathname;
+	$('a[href="' + pathname + '"]').addClass('active');
 });
 </script>
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
@@ -21,7 +21,7 @@ $(function() {
                 <li><a href="${ctxPath}/apply/applicationPage"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg> 提出申請</a></li>
             </ul>
         </li>
-        <li><a href="${ctxPath}"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
+        <li><a href="${ctxPath}/"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
         <%--
         <li><a href="widgets.html"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg> Widgets</a></li>
         <li><a href="charts.html"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Charts</a></li>

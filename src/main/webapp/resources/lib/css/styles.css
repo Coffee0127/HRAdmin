@@ -567,10 +567,11 @@ a.bg-danger:hover {
 
 .sidebar ul.nav .active a, .sidebar ul.nav li.parent a.active,
 .sidebar ul.nav .active > a:hover, .sidebar ul.nav li.parent a.active:hover,
-.sidebar ul.nav .active > a:focus, .sidebar ul.nav li.parent a.active:focus {
-	color: #fff;
-	background-color: #30a5ff;
-}*/
+.sidebar ul.nav .active > a:focus, .sidebar ul.nav li.parent a.active:focus,
+a.active {
+	color: #fff !important;
+	background-color: #30a5ff !important;
+}
 
 .sidebar ul.nav ul,
 .sidebar ul.nav ul li {
