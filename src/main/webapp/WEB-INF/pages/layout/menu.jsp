@@ -1,8 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
 $(function() {
-	var pathname = location.pathname;
-	$('a[href="' + pathname + '"]').addClass('active');
+    var pathname = location.pathname;
+    var $ul = $('a[href="' + pathname + '"]').addClass('active').parents('ul.children');
+    if ($ul) {
+        $ul.prev('a.collapsed').find('svg use').attr('xlink:href', '#stroked-chevron-down')
+            .end();
+        $ul.collapse('show');
+    }
+
+    $('a.collapse').on('click', function() {
+    	// toggle current collapse icon
+        var $use = $(this).find('svg use');
+        if ($(this).hasClass('collapsed')) {
+            $use.attr('xlink:href', '#stroked-chevron-down');
+        } else {
+            $use.attr('xlink:href', '#stroked-chevron-right');
+        }
+        // hide other collapse
+        $('ul.collapse').collapse('hide');
+        $('a.collapse').not(this).find('svg use').attr('xlink:href', '#stroked-chevron-right');
+    });
 });
 </script>
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
@@ -12,16 +30,25 @@ $(function() {
         </div>
     </form>
     <ul class="nav menu">
-        <li id="apply" class="parent">
-            <a class="collapse" data-toggle="collapse" href="#sub-apply">
-                <svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg> 員額申請
+        <li><a href="${ctxPath}/"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg>首頁</a></li>
+        <li class="parent">
+            <a class="collapse collapsed" data-toggle="collapse" href="#headcount-child">
+                <svg class="glyph"><use xlink:href="#stroked-chevron-right"></use></svg>員額申請
             </a>
-            <ul class="children collapse in" id="sub-apply">
-                <li><a href="${ctxPath}/headcount/view"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> 申請總覽</a></li>
-                <li><a href="${ctxPath}/headcount/apply"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg> 提出申請</a></li>
+            <ul class="children collapse" id="headcount-child">
+                <li><a href="${ctxPath}/headcount/view"><svg class="glyph"><use xlink:href="#stroked-table"></use></svg>申請總覽</a></li>
+                <li><a href="${ctxPath}/headcount/apply"><svg class="glyph"><use xlink:href="#stroked-pencil"></use></svg>提出申請</a></li>
             </ul>
         </li>
-        <li><a href="${ctxPath}/"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
+        <li class="parent">
+            <a class="collapse collapsed" data-toggle="collapse" href="#cfg-child">
+                <svg class="glyph"><use xlink:href="#stroked-chevron-right"></use></svg>系統管理
+            </a>
+            <ul class="children collapse" id="cfg-child">
+                <li><a href="#"><svg class="glyph"><use xlink:href="#stroked-gear"></use></svg>參數設定</a></li>
+                <li><a href="#"><svg class="glyph"><use xlink:href="#stroked-male-user"></use></svg>使用者管理</a></li>
+            </ul>
+        </li>
         <%--
         <li><a href="widgets.html"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg> Widgets</a></li>
         <li><a href="charts.html"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Charts</a></li>
@@ -51,8 +78,8 @@ $(function() {
                 </li>
             </ul>
         </li>
-        --%>
         <li role="presentation" class="divider"></li>
         <li><a href="${ctxPath}/loginPage"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
+        --%>
     </ul>
 </div><!--/.sidebar-->
