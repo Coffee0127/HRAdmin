@@ -60,7 +60,7 @@ public class HeadcountController {
     private CaseMgrService service;
 
     @RequestMapping("/apply")
-    public ModelAndView index(Model model) {
+    public ModelAndView applyIndex(Model model) {
         CaseMainDto caseMain = new CaseMainDto();
         caseMain.setRequiredBeginDate(new java.sql.Date(new Date().getTime()));
         model.addAttribute("caseMain", caseMain);
@@ -68,7 +68,7 @@ public class HeadcountController {
     }
 
     @RequestMapping("/view")
-    public ModelAndView manager(Model model) {
+    public ModelAndView mgrIndex(Model model) {
         return new ModelAndView("view");
     }
 
