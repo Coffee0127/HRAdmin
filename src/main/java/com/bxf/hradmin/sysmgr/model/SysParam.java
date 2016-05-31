@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.model;
+package com.bxf.hradmin.sysmgr.model;
 
 import java.sql.Timestamp;
 

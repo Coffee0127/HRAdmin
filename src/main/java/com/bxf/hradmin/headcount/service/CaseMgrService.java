@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.service;
+package com.bxf.hradmin.headcount.service;
 
-import com.bxf.hradmin.admin.dto.CaseMainDto;
 import com.bxf.hradmin.common.model.Page;
+import com.bxf.hradmin.headcount.dto.CaseMainDto;
 
 /**
  * CaseMainService

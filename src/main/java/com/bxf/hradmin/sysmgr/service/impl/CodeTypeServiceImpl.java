@@ -21,21 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.service;
+package com.bxf.hradmin.sysmgr.service.impl;
 
 import java.util.List;
 
-import com.bxf.hradmin.admin.model.CodeType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bxf.hradmin.sysmgr.model.CodeType;
+import com.bxf.hradmin.sysmgr.repositories.CodeTypeRepository;
+import com.bxf.hradmin.sysmgr.service.CodeTypeService;
 
 /**
- * CodeTypeService
+ * CodeTypeServiceImpl
  *
  * @since 2016-05-13
  * @author Bo-Xuan Fan
  */
-public interface CodeTypeService {
+@Service
+public class CodeTypeServiceImpl implements CodeTypeService {
 
-    List<CodeType> findByCodeType(String codeType);
+    @Autowired
+    private CodeTypeRepository repository;
 
-    List<CodeType> findByCodeIdAndCodeCat(String codeId, String codeCat);
+    @Override
+    public List<CodeType> findByCodeType(String codeType) {
+        return repository.findByCodeCat(codeType);
+    }
+
+    @Override
+    public List<CodeType> findByCodeIdAndCodeCat(String codeId, String codeCat) {
+        return repository.findByCodeIdLike(codeId, codeCat);
+    }
 }

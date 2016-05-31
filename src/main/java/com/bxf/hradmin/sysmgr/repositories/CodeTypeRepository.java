@@ -21,31 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.controller;
+package com.bxf.hradmin.sysmgr.repositories;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.ModelAndView;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.bxf.hradmin.sysmgr.model.CodeType;
+import com.bxf.hradmin.sysmgr.model.CodeTypePK;
 
 /**
- * IndexController
+ * CodeTypeRepository
  *
- * @since 2016-05-11
+ * @since 2016-05-12
  * @author Bo-Xuan Fan
  */
-@Controller
-@Scope(WebApplicationContext.SCOPE_REQUEST)
-public class IndexController {
+public interface CodeTypeRepository extends JpaSpecificationExecutor<CodeType>,
+        JpaRepository<CodeType, CodeTypePK> {
 
-    @RequestMapping({ "/index.html", "/", "/index", "/index.jsp" })
-    public ModelAndView index() {
-        return new ModelAndView("tilesIndex");
-    }
+    @Query(value = "SELECT * FROM CFG_CODETYPE c WHERE c.codeCat = :codeCat", nativeQuery = true)
+    List<CodeType> findByCodeCat(@Param("codeCat") String codeCat);
 
-    @RequestMapping("/loginPage")
-    public String loginPage() {
-        return "login";
-    }
+    @Query(value = "SELECT c FROM CodeType c WHERE c.codeTypePK.codeId LIKE CONCAT('%', :codeId, '%') AND c.codeTypePK.codeCat = :codeCat")
+    List<CodeType> findByCodeIdLike(@Param("codeId") String codeId, @Param("codeCat") String codeCat);
 }

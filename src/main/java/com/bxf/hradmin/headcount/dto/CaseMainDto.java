@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.dto;
+package com.bxf.hradmin.headcount.dto;
 
 import java.util.Date;
 import java.util.List;

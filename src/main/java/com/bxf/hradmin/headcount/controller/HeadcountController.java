@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.controller;
+package com.bxf.hradmin.headcount.controller;
 
 import java.util.Date;
 
@@ -40,8 +40,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bxf.hradmin.admin.dto.CaseMainDto;
-import com.bxf.hradmin.admin.service.CaseMgrService;
+import com.bxf.hradmin.headcount.dto.CaseMainDto;
+import com.bxf.hradmin.headcount.service.CaseMgrService;
 
 /**
  * HeadcountController

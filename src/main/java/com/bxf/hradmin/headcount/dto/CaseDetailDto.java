@@ -21,47 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.model;
+package com.bxf.hradmin.headcount.dto;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 /**
- * CaseDetail
+ * CaseDetailDto
  *
- * @since 2016-05-09
+ * @since 2016-05-18
  * @author Bo-Xuan Fan
  */
-@Entity
-@Table(name = "CASE_DETAIL")
-public class CaseDetail {
-
+public class CaseDetailDto {
     /** 訊息編號 */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "DETAIL_ID")
     private Long detailId;
 
     /** 案件編號 */
-    @Column(name = "CASE_ID")
     private Long caseId;
 
     /** 案件狀態 */
-    @Column(name = "CASE_STATUS")
     private String caseStatus;
 
     /** 訊息內容 */
-    @Column(name = "MSG_DETAIL")
     private String msgDetail;
 
     /** 更新時間 */
-    @Column(name = "UPDATE_DATETIME")
     private Date updateDatetime;
 
     public Long getDetailId() {
@@ -103,5 +86,4 @@ public class CaseDetail {
     public void setUpdateDatetime(Date updateDatetime) {
         this.updateDatetime = updateDatetime;
     }
-
 }

@@ -21,14 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.repositories;
+package com.bxf.hradmin.headcount.repositories;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import com.bxf.hradmin.admin.model.CaseDetail;
+import com.bxf.hradmin.headcount.model.CaseDetail;
 
 /**
  * CaseMainRepository

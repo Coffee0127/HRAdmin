@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.service.impl;
+package com.bxf.hradmin.headcount.service.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -34,17 +34,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.bxf.hradmin.admin.dto.CaseDetailDto;
-import com.bxf.hradmin.admin.dto.CaseMainDto;
-import com.bxf.hradmin.admin.model.CaseDetail;
-import com.bxf.hradmin.admin.model.CaseMain;
-import com.bxf.hradmin.admin.repositories.CaseDetailRepository;
-import com.bxf.hradmin.admin.repositories.CaseMainRepository;
-import com.bxf.hradmin.admin.service.CaseMgrService;
 import com.bxf.hradmin.common.constant.CaseStatus;
 import com.bxf.hradmin.common.model.Page;
 import com.bxf.hradmin.common.utils.BeanUtils;
 import com.bxf.hradmin.common.web.utils.UserUtils;
+import com.bxf.hradmin.headcount.dto.CaseDetailDto;
+import com.bxf.hradmin.headcount.dto.CaseMainDto;
+import com.bxf.hradmin.headcount.model.CaseDetail;
+import com.bxf.hradmin.headcount.model.CaseMain;
+import com.bxf.hradmin.headcount.repositories.CaseDetailRepository;
+import com.bxf.hradmin.headcount.repositories.CaseMainRepository;
+import com.bxf.hradmin.headcount.service.CaseMgrService;
 
 /**
  * CaseMainServiceImpl

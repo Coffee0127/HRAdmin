@@ -21,36 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.service.impl;
+package com.bxf.hradmin.sysmgr.repositories;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.bxf.hradmin.admin.model.CodeType;
-import com.bxf.hradmin.admin.repositories.CodeTypeRepository;
-import com.bxf.hradmin.admin.service.CodeTypeService;
+import com.bxf.hradmin.sysmgr.model.SysParam;
 
 /**
- * CodeTypeServiceImpl
+ * SysparamRepository
  *
- * @since 2016-05-13
+ * @since 2016-05-07
  * @author Bo-Xuan Fan
  */
-@Service
-public class CodeTypeServiceImpl implements CodeTypeService {
+public interface SysParamRepository extends JpaSpecificationExecutor<SysParam>,
+        JpaRepository<SysParam, String> {
 
-    @Autowired
-    private CodeTypeRepository repository;
-
-    @Override
-    public List<CodeType> findByCodeType(String codeType) {
-        return repository.findByCodeCat(codeType);
-    }
-
-    @Override
-    public List<CodeType> findByCodeIdAndCodeCat(String codeId, String codeCat) {
-        return repository.findByCodeIdLike(codeId, codeCat);
-    }
 }

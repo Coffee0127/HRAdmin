@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.controller;
+package com.bxf.hradmin.sysmgr.controller;
 
 import java.util.List;
 
@@ -38,9 +38,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.bxf.hradmin.admin.model.CodeType;
-import com.bxf.hradmin.admin.service.CodeTypeService;
 import com.bxf.hradmin.common.constant.CodeTypeConstants;
+import com.bxf.hradmin.sysmgr.model.CodeType;
+import com.bxf.hradmin.sysmgr.service.CodeTypeService;
 
 /**
  * CodeTypeController

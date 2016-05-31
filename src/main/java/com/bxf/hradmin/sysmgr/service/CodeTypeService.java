@@ -21,20 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.admin.repositories;
+package com.bxf.hradmin.sysmgr.service;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import java.util.List;
 
-import com.bxf.hradmin.admin.model.SysParam;
+import com.bxf.hradmin.sysmgr.model.CodeType;
 
 /**
- * SysparamRepository
+ * CodeTypeService
  *
- * @since 2016-05-07
+ * @since 2016-05-13
  * @author Bo-Xuan Fan
  */
-public interface SysParamRepository extends JpaSpecificationExecutor<SysParam>,
-        JpaRepository<SysParam, String> {
+public interface CodeTypeService {
 
+    List<CodeType> findByCodeType(String codeType);
+
+    List<CodeType> findByCodeIdAndCodeCat(String codeId, String codeCat);
 }

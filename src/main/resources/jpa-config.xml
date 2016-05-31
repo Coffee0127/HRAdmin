@@ -61,5 +61,5 @@
         <aop:advisor advice-ref="txAdvice" pointcut-ref="servicePointcut" />
     </aop:config>
 
-    <jpa:repositories base-package="com.bxf.hradmin.admin.repositories" />
+    <jpa:repositories base-package="com.bxf.hradmin.*.repositories" />
 </beans>
