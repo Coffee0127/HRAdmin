@@ -180,7 +180,7 @@ $(function() {
                         <th data-field="reason">增補原因</th>
                         <th data-field="note">備註</th>
                         <th data-field="applier" data-align="center">申請人</th>
-                        <th data-formatter="btnFormatter"></th>
+                        <th data-formatter="btnFormatter" data-align="center"></th>
                     </tr>
                 </thead>
             </table>
