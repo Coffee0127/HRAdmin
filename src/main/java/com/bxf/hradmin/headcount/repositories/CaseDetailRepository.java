@@ -25,9 +25,7 @@ package com.bxf.hradmin.headcount.repositories;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-
+import com.bxf.hradmin.common.repositories.IRepository;
 import com.bxf.hradmin.headcount.model.CaseDetail;
 
 /**
@@ -36,8 +34,7 @@ import com.bxf.hradmin.headcount.model.CaseDetail;
  * @since 2016-05-15
  * @author Bo-Xuan Fan
  */
-public interface CaseDetailRepository extends JpaSpecificationExecutor<CaseDetail>,
-        JpaRepository<CaseDetail, Long> {
+public interface CaseDetailRepository extends IRepository<CaseDetail, Long> {
 
     List<CaseDetail> findByCaseId(Long caseId);
 }

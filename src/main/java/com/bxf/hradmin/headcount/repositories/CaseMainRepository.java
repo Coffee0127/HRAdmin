@@ -23,9 +23,7 @@
  */
 package com.bxf.hradmin.headcount.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-
+import com.bxf.hradmin.common.repositories.IRepository;
 import com.bxf.hradmin.headcount.model.CaseMain;
 
 /**
@@ -34,7 +32,6 @@ import com.bxf.hradmin.headcount.model.CaseMain;
  * @since 2016-05-15
  * @author Bo-Xuan Fan
  */
-public interface CaseMainRepository extends JpaSpecificationExecutor<CaseMain>,
-        JpaRepository<CaseMain, Long> {
+public interface CaseMainRepository extends IRepository<CaseMain, Long> {
 
 }

@@ -21,17 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.sysmgr.repositories;
+package com.bxf.hradmin.common.repositories;
 
-import com.bxf.hradmin.common.repositories.IRepository;
-import com.bxf.hradmin.sysmgr.model.SysParam;
+import java.io.Serializable;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.NoRepositoryBean;
 
 /**
- * SysparamRepository
+ * IRepository
  *
- * @since 2016-05-07
+ * @since 2016-06-01
  * @author Bo-Xuan Fan
  */
-public interface SysParamRepository extends IRepository<SysParam, String> {
-
+@NoRepositoryBean
+public interface IRepository<T, ID extends Serializable> extends
+        JpaSpecificationExecutor<T>, JpaRepository<T, ID> {
 }

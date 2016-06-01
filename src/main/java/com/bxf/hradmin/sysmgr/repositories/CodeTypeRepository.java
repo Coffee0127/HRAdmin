@@ -25,11 +25,10 @@ package com.bxf.hradmin.sysmgr.repositories;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.bxf.hradmin.common.repositories.IRepository;
 import com.bxf.hradmin.sysmgr.model.CodeType;
 import com.bxf.hradmin.sysmgr.model.CodeTypePK;
 
@@ -39,8 +38,7 @@ import com.bxf.hradmin.sysmgr.model.CodeTypePK;
  * @since 2016-05-12
  * @author Bo-Xuan Fan
  */
-public interface CodeTypeRepository extends JpaSpecificationExecutor<CodeType>,
-        JpaRepository<CodeType, CodeTypePK> {
+public interface CodeTypeRepository extends IRepository<CodeType, CodeTypePK> {
 
     @Query(value = "SELECT * FROM CFG_CODETYPE c WHERE c.codeCat = :codeCat", nativeQuery = true)
     List<CodeType> findByCodeCat(@Param("codeCat") String codeCat);
