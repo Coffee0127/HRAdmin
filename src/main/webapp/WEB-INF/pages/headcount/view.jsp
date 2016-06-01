@@ -14,10 +14,10 @@
 .editTable>tbody>tr:first-child>td {
     border-top: none;
 }
-#caseTable>tbody>tr>td, .editTable>tbody>tr>td {
+#dataTable>tbody>tr>td, .editTable>tbody>tr>td {
     vertical-align: middle;
 }
-#caseTable>tbody>tr.edited>td {
+#dataTable>tbody>tr.edited>td {
     background: #d9edf7;
     border-color: #d9edf7;
 }
@@ -52,7 +52,7 @@ $(function() {
     var $confirmForm = $('#confirmForm'); 
     $confirmForm.validationEngine({ scroll: false });
     
-    $('#caseTable').bootstrapTable({
+    $('#dataTable').bootstrapTable({
         showToggle: true,
         pagination: true,
         showColumns: true,
@@ -140,8 +140,8 @@ $(function() {
             .done(function(msg) {
                 if (msg.code == 0) {
                 	showHintMessage('處理完畢!');
-                	// update the caseTable
-                	$('#caseTable').bootstrapTable('updateByUniqueId', {
+                	// update the dataTable
+                	$('#dataTable').bootstrapTable('updateByUniqueId', {
                 		id: _editedCaseId,
                 		row: JSON.parse(msg.desc)
                 	}).find('tr[data-uniqueid="' + _editedCaseId + '"]').addClass('edited');
@@ -162,7 +162,7 @@ $(function() {
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">申請總覽</div>
-            <table id="caseTable">
+            <table id="dataTable">
                 <thead>
                     <tr>
                         <th data-field="caseId" data-align="center">編號</th>
