@@ -29,13 +29,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Page
+ * QueryPage
  *
  * @since 2016-05-18
  * @author Bo-Xuan Fan
  */
 @SuppressWarnings("rawtypes")
-public class Page {
+public class QueryPage {
     private int activePage;
     private int totalPages;
     private long totalCounts;
