@@ -1,5 +1,20 @@
 ;
 $(function() {
+    dateFormatter = function(value) {
+        return value.replace(/\..*/g, '');
+    };
+
+    codeTypeFormatter = function(value) {
+        return codeMap[value];
+    };
+
+    $.extend($.fn.datepicker.defaults, {
+        language: 'zh-TW',
+        clearBtn: true,
+        autoclose: true,
+        todayBtn: true
+    });
+
     $.extend(window, {
         url: function(path) {
             return ctxPath + path;
