@@ -7,6 +7,7 @@
 <link href="${ctxPath}/resources/lib/css/validationEngine.jquery.css" rel="stylesheet" />
 <script src="${ctxPath}/resources/lib/js/jquery.validationEngine-zh_TW.js"></script>
 <script src="${ctxPath}/resources/lib/js/jquery.validationEngine.js"></script>
+<script src="${ctxPath}/resources/js/headcount/view.js"></script>
 <style>
 .editTable {
     border-bottom: none;
@@ -25,161 +26,120 @@
 .editTable textarea {
     resize: vertical;
 }
-
-.p-r-5 {
-    padding-right: 5px;
-}
 </style>
 <body>
-<script>
-$(function() {
-    dateFormatter = function(value) {
-        return value.replace(/\..*/g, '');
-    };
-
-    projFormatter = function(value, row) {
-        return row.projectCode + '-' + row.projectName;
-    };
-
-    codeTypeFormatter = function(value) {
-        return codeMap[value];
-    };
-
-    btnFormatter = function(value, row) {
-        return '<button type="button" class="btn btn-info" data-case-id=' + row.caseId + ' data-toggle="modal" data-target="#caseModal"><span class="p-r-5 glyphicon glyphicon-th-list"></span>檢視</button>';
-    };
-
-    var $confirmForm = $('#confirmForm'); 
-    $confirmForm.validationEngine({ scroll: false });
-    
-    $('#dataTable').bootstrapTable({
-        showToggle: true,
-        pagination: true,
-        showColumns: true,
-        uniqueId: 'caseId',
-        sidePagination: 'server',
-        url: url('/headcount/find'),
-        queryParams: function(params) {
-            params.activePage = params.offset / params.limit;
-            return params;
-        }
-    }).hideColumns([ 'requiredSkill', 'requiredBeginDate', 'requiredEndDate', 'reason', 'note' ]);
-
-    var _editedCaseId, _$editedCaseRow;
-    $('#caseModal').on('show.bs.modal', function (event) {
-        var $this = $(this),
-            $button = $(event.relatedTarget);
-        _$editedCaseRow = $button.parents('tr');
-        $('tr.edited').removeClass('edited');
-        $button.one('focus', function(e){$(this).blur();});
-        _editedCaseId = $button.data('caseId');
-        $this.find('.modal-title span').html(_editedCaseId);
-        $.ajax({
-            url: url('/headcount/findOne'),
-            type: 'post',
-            data: {
-                caseId: _editedCaseId
-            }
-        })
-        .done(function(caseMain) {
-            var $caseModal = $('#caseModal');
-            // reset tab
-            $caseModal.find('div.tabs ul.nav li a:first').tab('show')
-               // reset form
-               .end().find('#msgDetail').hide()
-               .end().find('form')[0].reset();
-            // clear previous validation
-            $confirmForm.validationEngine('hideAll');
-            $caseModal.find('table.table div[data-field]').html('-');
-            for (var key in caseMain) {
-                if (key == 'caseDetails') {
-                    var $table = $caseModal.find('table#detailTable');
-                    $table.find('tr:not(:first)').remove();
-                    var details = caseMain[key];
-                    $.each(details, function(index, detail) {
-                        var $tr = $('<tr>');
-                        $tr.append($('<td>', { text: codeTypeFormatter(detail['caseStatus']), 'class': 'text-center' }));
-                        $tr.append($('<td>', { text: dateFormatter(detail['updateDatetime']), 'class': 'text-center' }));
-                        $tr.append($('<td>', { text: detail['msgDetail'] }));
-                        $table.append($tr);
-                    });
-                    continue;
-                }
-                var $div = $caseModal.find('table.table div[data-field="' + key + '"]');
-                var formatter = $div.data('formatter');
-                var value = caseMain[key];
-                if (formatter) {
-                    value = window[formatter](value, caseMain);
-                }
-                $div.html(value);
-            }
-        })
-        .fail(function() {
-        	showErrorMessage('query fail');
-        });
-    });
-    
-    $('input[name="confirm"]').on('change', function() {
-        if ($(this).val() == 'Y') {
-            $('#msgDetail').fadeOut().val('').validationEngine('hide');
-        } else {
-            $('#msgDetail').fadeIn().focus();
-        }
-        return false;
-    });
-    
-    $('#btnConfirm').on('click', function() {
-        if ($confirmForm.validationEngine('validate')) {
-            $.ajax({
-                url: url('/headcount/confirm'),
-                type: 'post',
-                data: $.extend({}, $confirmForm.serializeObject(), {
-                    caseId: _editedCaseId
-                })
-            })
-            .done(function(msg) {
-                if (msg.code == 0) {
-                	showHintMessage('處理完畢!');
-                	// update the dataTable
-                	$('#dataTable').bootstrapTable('updateByUniqueId', {
-                		id: _editedCaseId,
-                		row: JSON.parse(msg.desc)
-                	}).find('tr[data-uniqueid="' + _editedCaseId + '"]').addClass('edited');
-                    setTimeout(function() {
-                    	$('.modal').modal('hide');
-                    }, 1500);
-                } else {
-                	showErrorMessage('系統異常：' + msg.desc);
-                }
-            });
-        }
-        
-        return false;
-    });
-});
-</script>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">申請總覽</div>
+            <div class="query-cond-wrapper">
+                <span class="query-cond-heading">查詢條件</span>
+                <div class="query-cond-body">
+                    <form id="queryCondForm" class="form-horizontal">
+                        <div class="form-group"></div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">案件編號：</label>
+                            <div class="col-lg-2">
+                                <input id="caseId" name="caseId" type="text" class="form-control" placeholder="案件編號" />
+                            </div>
+                            <label class="col-lg-2 control-label">案件時間：</label>
+                            <div class="col-lg-5 form-inline">
+                                <div class="input-group date date-picker" style="width: 36%;">
+                                    <input id="beginDatetime" name="beginDatetime" type="text" class="form-control" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="起始時間" />
+                                    <div class="input-group-addon icon-date-picker">
+                                        <span class="glyphicon glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+                                <div class="form-control text-center" style="border: none;">~</div>
+                                <div class="input-group date date-picker" style="width: 36%;">
+                                    <input id="endDateTime" name="endDateTime" type="text" class="form-control date-picker" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="結束時間" />
+                                    <div class="input-group-addon icon-date-picker">
+                                        <span class="glyphicon glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">狀態：</label>
+                            <div class="col-lg-2">
+                                <select id="caseStatus" name="caseStatus" class="form-control">
+                                    <option value="">請選擇</option>
+                                </select>
+                            </div>
+                            <label class="col-lg-2 control-label">部門：</label>
+                            <div class="col-lg-2">
+                                <select id="dept" name="dept" class="form-control">
+                                    <option value="">請選擇</option>
+                                </select>
+                            </div>
+                            <label class="col-lg-1 control-label">單位：</label>
+                            <div class="col-lg-2">
+                                <select id="unit" name="unit" class="form-control">
+                                    <option value="">請選擇</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">需求人力角色：</label>
+                            <div class="col-lg-2">
+                                <select id="hrmRole" name="hrmRole" class="form-control">
+                                    <option value="">請選擇</option>
+                                </select>
+                            </div>
+                            <label class="col-lg-2 control-label">需求人員類別：</label>
+                            <div class="col-lg-2">
+                                <select id="hrmType" name="hrmType" class="form-control">
+                                    <option value="">請選擇</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">人力需求起日：</label>
+                            <div class="col-lg-2">
+                                <div class="input-group date date-picker">
+                                    <input id="requiredBeginDate" name="requiredBeginDate" type="text" class="form-control" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="起始時間" />
+                                    <div class="input-group-addon icon-date-picker">
+                                        <span class="glyphicon glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label class="col-lg-2 control-label text-nowrap">人力需求迄日：</label>
+                            <div class="col-lg-2">
+                                <div class="input-group date date-picker">
+                                    <input id="requiredEndDate" name="requiredEndDate" type="text" class="form-control" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="結束時間" />
+                                    <div class="input-group-addon icon-date-picker">
+                                        <span class="glyphicon glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-4">
+                                <button id="btnQuery" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <table id="dataTable">
                 <thead>
                     <tr>
-                        <th data-field="caseId" data-align="center">編號</th>
-                        <th data-field="updateDatetime" data-formatter="dateFormatter" data-align="center">更新時間</th>
-                        <th data-field="caseStatus" data-formatter="codeTypeFormatter" data-align="center">狀態</th>
-                        <th data-field="dept" data-formatter="codeTypeFormatter" data-align="center">部門</th>
-                        <th data-field="unit" data-formatter="codeTypeFormatter" data-align="center">單位</th>
-                        <th data-field="projectCode" data-formatter="projFormatter" data-align="center">需求人力專案</th>
-                        <th data-field="hrmRole" data-formatter="codeTypeFormatter" data-align="center">需求人力角色</th>
-                        <th data-field="hrmType" data-formatter="codeTypeFormatter" data-align="center">需求人員類別</th>
-                        <th data-field="requiredCount" data-align="center">需求人數</th>
-                        <th data-field="requiredSkill">Skill</th>
-                        <th data-field="requiredBeginDate" data-align="center">人力需求起日</th>
-                        <th data-field="requiredEndDate" data-align="center">人力需求迄日</th>
-                        <th data-field="reason">增補原因</th>
-                        <th data-field="note">備註</th>
-                        <th data-field="applier" data-align="center">申請人</th>
+                        <th data-sortable="true" data-field="caseId" data-align="center" data-class="text-nowrap">案件編號</th>
+                        <th data-sortable="true" data-field="updateDatetime" data-formatter="dateFormatter" data-align="center">更新時間</th>
+                        <th data-sortable="true" data-field="caseStatus" data-formatter="codeTypeFormatter" data-align="center" data-class="text-nowrap">狀態</th>
+                        <th data-sortable="true" data-field="preCaseStatus" data-formatter="codeTypeFormatter" data-align="center" data-class="text-nowrap">前次狀態</th>
+                        <th data-sortable="true" data-field="dept" data-formatter="codeTypeFormatter" data-align="center" data-class="text-nowrap">部門</th>
+                        <th data-sortable="true" data-field="unit" data-formatter="codeTypeFormatter" data-align="center" data-class="text-nowrap">單位</th>
+                        <th data-sortable="true" data-field="projectCode" data-formatter="projFormatter" data-align="center">需求人力專案</th>
+                        <th data-sortable="true" data-field="hrmRole" data-formatter="codeTypeFormatter" data-align="center">需求人力角色</th>
+                        <th data-sortable="true" data-field="hrmType" data-formatter="codeTypeFormatter" data-align="center">需求人員類別</th>
+                        <th data-sortable="true" data-field="requiredCount" data-align="center">需求人數</th>
+                        <th data-sortable="true" data-field="requiredSkill">Skill</th>
+                        <th data-sortable="true" data-field="requiredBeginDate" data-align="center">人力需求起日</th>
+                        <th data-sortable="true" data-field="requiredEndDate" data-align="center">人力需求迄日</th>
+                        <th data-sortable="true" data-field="reason">增補原因</th>
+                        <th data-sortable="true" data-field="note">備註</th>
+                        <th data-sortable="true" data-field="applier" data-align="center">申請人</th>
                         <th data-formatter="btnFormatter" data-align="center">細節</th>
                     </tr>
                 </thead>
@@ -193,7 +153,7 @@ $(function() {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">編號 - <span></span></h4>
+                <h4 class="modal-title">案件編號 - <span></span></h4>
             </div>
             <div class="modal-body">
                 <div class="panel panel-default">
@@ -206,7 +166,7 @@ $(function() {
                             <div class="tab-pane fade in active" id="pilltab1">
                                 <table class="table editTable">
                                     <tr>
-                                        <td class="col-md-4">編號</td>
+                                        <td class="col-md-4">案件編號</td>
                                         <td class="col-md-8"><div data-field="caseId"></div></td>
                                     </tr>
                                     <tr>
@@ -216,6 +176,10 @@ $(function() {
                                     <tr>
                                         <td class="col-md-4">狀態</td>
                                         <td class="col-md-8"><div data-field="caseStatus" data-formatter="codeTypeFormatter" ></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-md-4">前次狀態</td>
+                                        <td class="col-md-8"><div data-field="preCaseStatus" data-formatter="codeTypeFormatter" ></div></td>
                                     </tr>
                                     <tr>
                                         <td class="col-md-4">部門</td>
@@ -265,7 +229,7 @@ $(function() {
                                         <td class="col-md-4">申請人</td>
                                         <td class="col-md-8"><div data-field="applier"></div></td>
                                     </tr>
-                                    <tr>
+                                    <tr style="display: none;">
                                         <td class="col-md-4">處理結果與說明</td>
                                         <td class="col-md-8 radio">
                                             <form id="confirmForm">
@@ -276,9 +240,20 @@ $(function() {
                                                     <label>
                                                         <input id="confirm_N" type="radio" name="confirm" value="N" class="validate[required]">拒絕
                                                     </label>
-                                                    <textarea id="msgDetail" name="msgDetail" class="form-control validate[condRequired[confirm_N]]" style="display: none; margin-top: 0.5em;" rows="3"></textarea>
+                                                    <textarea id="msgDetail" name="msgDetail" class="form-control validate[condRequired[confirm_N]]" style="display: none; margin-top: 0.5em;" rows="3" placeholder="請填寫拒絕原因"></textarea>
                                                 </div>
                                                 <button id="btnConfirm" type="button" class="btn btn-primary"><span class="p-r-5 glyphicon glyphicon-ok"></span>確認</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <tr style="display: none;">
+                                        <td class="col-md-4">人資處理紀錄</td>
+                                        <td class="col-md-8">
+                                            <form id="hrConfirmForm">
+                                                <div class="form-group">
+                                                    <textarea id="processMsgDetail" name="processMsgDetail" class="form-control validate[required]" rows="3" placeholder="請填寫紀錄"></textarea>
+                                                </div>
+                                                <button id="btnHRConfirm" type="button" class="btn btn-primary"><span class="p-r-5 glyphicon glyphicon-ok"></span>確認</button>
                                             </form>
                                         </td>
                                     </tr>

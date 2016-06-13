@@ -23,7 +23,7 @@
  */
 package com.bxf.hradmin.headcount.service;
 
-import com.bxf.hradmin.common.model.Page;
+import com.bxf.hradmin.common.model.QueryPage;
 import com.bxf.hradmin.headcount.dto.CaseMainDto;
 
 /**
@@ -36,9 +36,9 @@ public interface CaseMgrService {
 
     void saveCaseMain(CaseMainDto caseMain);
 
-    Page find(CaseMainDto queryCond, int page, int size);
+    QueryPage find(CaseMainDto queryCond);
 
-    CaseMainDto findOne(Long caseId);
+    CaseMainDto findOne(String caseId);
 
-    void updateConfirmCase(Long caseId, boolean confirm, String msgDetail);
+    void updateConfirmCase(String caseId, boolean confirm, String msgDetail);
 }

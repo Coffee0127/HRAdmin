@@ -23,6 +23,9 @@
  */
 package com.bxf.hradmin.headcount.repositories;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import com.bxf.hradmin.common.repositories.IRepository;
 import com.bxf.hradmin.headcount.model.CaseMain;
 
@@ -32,6 +35,8 @@ import com.bxf.hradmin.headcount.model.CaseMain;
  * @since 2016-05-15
  * @author Bo-Xuan Fan
  */
-public interface CaseMainRepository extends IRepository<CaseMain, Long> {
+public interface CaseMainRepository extends IRepository<CaseMain, String> {
 
+    @Query(value = "SELECT GET_CASE_NO(:deptCat)", nativeQuery = true)
+    String getCaseNo(@Param("deptCat") String deptCat);
 }

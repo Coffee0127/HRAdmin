@@ -27,8 +27,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -46,12 +44,14 @@ public class CaseMain {
 
     /** 案件編號 */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "CASE_ID")
-    private Long caseId;
+    private String caseId;
     /** 案件狀態 */
     @Column(name = "CASE_STATUS")
     private String caseStatus;
+    /** 前次案件狀態 */
+    @Column(name = "PRE_CASE_STATUS")
+    private String preCaseStatus;
     /** 更新時間 */
     @Column(name = "UPDATE_DATETIME")
     private Date updateDatetime;
@@ -100,16 +100,24 @@ public class CaseMain {
     @Column(name = "HR_PROCESS")
     private String hrProcess;
 
-    public Long getCaseId() {
+    public String getCaseId() {
         return caseId;
     }
 
-    public void setCaseId(Long caseId) {
+    public void setCaseId(String caseId) {
         this.caseId = caseId;
     }
 
     public String getCaseStatus() {
         return caseStatus;
+    }
+
+    public String getPreCaseStatus() {
+        return preCaseStatus;
+    }
+
+    public void setPreCaseStatus(String preCaseStatus) {
+        this.preCaseStatus = preCaseStatus;
     }
 
     public void setCaseStatus(String caseStatus) {

@@ -50,7 +50,7 @@ public class CaseDetail {
 
     /** 案件編號 */
     @Column(name = "CASE_ID")
-    private Long caseId;
+    private String caseId;
 
     /** 案件狀態 */
     @Column(name = "CASE_STATUS")
@@ -72,11 +72,11 @@ public class CaseDetail {
         this.detailId = detailId;
     }
 
-    public Long getCaseId() {
+    public String getCaseId() {
         return caseId;
     }
 
-    public void setCaseId(Long caseId) {
+    public void setCaseId(String caseId) {
         this.caseId = caseId;
     }
 

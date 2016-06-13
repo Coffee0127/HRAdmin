@@ -15,13 +15,13 @@
 	</definition>
 
 	<!-- Headcount definition -->
-	<definition name="view" extends="base.layout">
+	<definition name="viewHeadcount" extends="base.layout">
 		<put-attribute name="title" value="HR Admin - Headcount Page" />
-		<put-attribute name="content" value="/WEB-INF/pages/headcount/view.jsp" />
+        <put-attribute name="content" value="/WEB-INF/pages/headcount/view.jsp" />
 	</definition>
 
 	<!-- Headcount definition -->
-	<definition name="apply" extends="view">
+	<definition name="applyHeadcount" extends="viewHeadcount">
 		<put-attribute name="content" value="/WEB-INF/pages/headcount/apply.jsp" />
 	</definition>
 

@@ -36,5 +36,5 @@ import com.bxf.hradmin.headcount.model.CaseDetail;
  */
 public interface CaseDetailRepository extends IRepository<CaseDetail, Long> {
 
-    List<CaseDetail> findByCaseId(Long caseId);
+    List<CaseDetail> findByCaseId(String caseId);
 }

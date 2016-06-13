@@ -21,69 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.headcount.dto;
-
-import java.util.Date;
+package com.bxf.hradmin.common.exception;
 
 /**
- * CaseDetailDto
+ * HRHeadCountException
  *
- * @since 2016-05-18
+ * @since 2016-06-05
  * @author Bo-Xuan Fan
  */
-public class CaseDetailDto {
-    /** 訊息編號 */
-    private Long detailId;
+public class HRHeadCountException extends HRException {
 
-    /** 案件編號 */
-    private String caseId;
+    /** serialVersionUID */
+    private static final long serialVersionUID = -5281582581282798461L;
 
-    /** 案件狀態 */
-    private String caseStatus;
-
-    /** 訊息內容 */
-    private String msgDetail;
-
-    /** 更新時間 */
-    private Date updateDatetime;
-
-    public Long getDetailId() {
-        return detailId;
+    public HRHeadCountException() {
+        super();
     }
 
-    public void setDetailId(Long detailId) {
-        this.detailId = detailId;
+    public HRHeadCountException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public String getCaseId() {
-        return caseId;
+    public HRHeadCountException(String message) {
+        super(message);
     }
 
-    public void setCaseId(String caseId) {
-        this.caseId = caseId;
-    }
-
-    public String getCaseStatus() {
-        return caseStatus;
-    }
-
-    public void setCaseStatus(String caseStatus) {
-        this.caseStatus = caseStatus;
-    }
-
-    public String getMsgDetail() {
-        return msgDetail;
-    }
-
-    public void setMsgDetail(String msgDetail) {
-        this.msgDetail = msgDetail;
-    }
-
-    public Date getUpdateDatetime() {
-        return updateDatetime;
-    }
-
-    public void setUpdateDatetime(Date updateDatetime) {
-        this.updateDatetime = updateDatetime;
+    public HRHeadCountException(Throwable cause) {
+        super(cause);
     }
 }

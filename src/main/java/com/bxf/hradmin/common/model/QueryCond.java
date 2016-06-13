@@ -21,69 +21,65 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.headcount.dto;
+package com.bxf.hradmin.common.model;
 
-import java.util.Date;
+import java.io.Serializable;
 
 /**
- * CaseDetailDto
+ * QueryCond
  *
- * @since 2016-05-18
+ * @since 2016-06-09
  * @author Bo-Xuan Fan
  */
-public class CaseDetailDto {
-    /** 訊息編號 */
-    private Long detailId;
+public abstract class QueryCond implements Serializable {
+    private static final long serialVersionUID = 2392186992502397377L;
 
-    /** 案件編號 */
-    private String caseId;
+    protected int limit = 10;
+    protected int activePage = 0;
+    protected String order;
+    protected String sort;
+    /**
+     * is ascending or descending
+     */
+    protected boolean isAsc;
 
-    /** 案件狀態 */
-    private String caseStatus;
-
-    /** 訊息內容 */
-    private String msgDetail;
-
-    /** 更新時間 */
-    private Date updateDatetime;
-
-    public Long getDetailId() {
-        return detailId;
+    public int getLimit() {
+        return limit;
     }
 
-    public void setDetailId(Long detailId) {
-        this.detailId = detailId;
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
-    public String getCaseId() {
-        return caseId;
+    public int getActivePage() {
+        return activePage;
     }
 
-    public void setCaseId(String caseId) {
-        this.caseId = caseId;
+    public void setActivePage(int activePage) {
+        this.activePage = activePage;
     }
 
-    public String getCaseStatus() {
-        return caseStatus;
+    public String getOrder() {
+        return order;
     }
 
-    public void setCaseStatus(String caseStatus) {
-        this.caseStatus = caseStatus;
+    public void setOrder(String order) {
+        this.order = order;
     }
 
-    public String getMsgDetail() {
-        return msgDetail;
+    public String getSort() {
+        return sort;
     }
 
-    public void setMsgDetail(String msgDetail) {
-        this.msgDetail = msgDetail;
+    public void setSort(String sort) {
+        this.sort = sort;
     }
 
-    public Date getUpdateDatetime() {
-        return updateDatetime;
+    public boolean isAsc() {
+        return isAsc;
     }
 
-    public void setUpdateDatetime(Date updateDatetime) {
-        this.updateDatetime = updateDatetime;
+    public void setAsc(boolean isAsc) {
+        this.isAsc = isAsc;
     }
 }

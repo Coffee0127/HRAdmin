@@ -29,20 +29,32 @@ import java.util.List;
 import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.bxf.hradmin.common.model.QueryCond;
+
 /**
  * CaseMainDto
  *
  * @since 2016-05-18
  * @author Bo-Xuan Fan
  */
-public class CaseMainDto {
+public class CaseMainDto extends QueryCond {
 
+    /** serialVersionUID */
+    private static final long serialVersionUID = -7612063811042622657L;
     /** 案件編號 */
-    private Long caseId;
+    private String caseId;
     /** 案件狀態 */
     private String caseStatus;
+    /** 前次案件狀態 */
+    private String preCaseStatus;
     /** 更新時間 */
     private Date updateDatetime;
+    /** 案件更新起始時間 */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date beginDatetime;
+    /** 案件更新結束時間 */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date endDateTime;
     /** 部門 */
     private String dept;
     /** 單位 */
@@ -76,16 +88,24 @@ public class CaseMainDto {
     /** 案件歷程 */
     private List<CaseDetailDto> caseDetails;
 
-    public Long getCaseId() {
+    public String getCaseId() {
         return caseId;
     }
 
-    public void setCaseId(Long caseId) {
+    public void setCaseId(String caseId) {
         this.caseId = caseId;
     }
 
     public String getCaseStatus() {
         return caseStatus;
+    }
+
+    public String getPreCaseStatus() {
+        return preCaseStatus;
+    }
+
+    public void setPreCaseStatus(String preCaseStatus) {
+        this.preCaseStatus = preCaseStatus;
     }
 
     public void setCaseStatus(String caseStatus) {
@@ -98,6 +118,22 @@ public class CaseMainDto {
 
     public void setUpdateDatetime(Date updateDatetime) {
         this.updateDatetime = updateDatetime;
+    }
+
+    public Date getBeginDatetime() {
+        return beginDatetime;
+    }
+
+    public void setBeginDatetime(Date beginDatetime) {
+        this.beginDatetime = beginDatetime;
+    }
+
+    public Date getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(Date endDateTime) {
+        this.endDateTime = endDateTime;
     }
 
     public String getDept() {

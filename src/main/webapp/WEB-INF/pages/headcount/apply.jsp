@@ -14,16 +14,6 @@
         padding-bottom: 15px;
     }
 }
-.required label:after {
-    content: "*";
-    color: red;
-    padding-left: 3px;
-    font-size: 16px;
-    vertical-align: middle;
-}
-.p-r-5 {
-    padding-right: 5px;
-}
 </style>
 <body>
 <script>
