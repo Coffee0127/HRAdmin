@@ -1,0 +1,17 @@
+@import url("query-cond.css");
+
+.p-r-5 {
+    padding-right: 5px;
+}
+
+.required label:after {
+    content: "*";
+    color: red;
+    padding-left: 3px;
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.date-picker input.form-control[readonly] {
+    background: none;
+}

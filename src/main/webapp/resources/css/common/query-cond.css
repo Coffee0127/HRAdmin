@@ -1,0 +1,23 @@
+.query-cond-wrapper {
+    margin: 15px 0px;
+    position: relative;
+}
+.query-cond-wrapper .query-cond-heading {
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.025em;
+    display: inline-block;
+    padding: 0 1em;
+    height: 0;
+    color: #31708f;
+    line-height: 30px;
+    border-color: #D9EDF7;
+    border-bottom: 30px solid #D9EDF7;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+.query-cond-wrapper .query-cond-body {
+    border: 1px solid #F1F1F1;
+    border-bottom: 1px solid #dddddd;
+    border-radius: 4px;
+}

@@ -6,6 +6,7 @@
 <link href="${ctxPath}/resources/lib/css/bootstrap.min.css" rel="stylesheet">
 <link href="${ctxPath}/resources/lib/css/datepicker3.css" rel="stylesheet">
 <link href="${ctxPath}/resources/lib/css/styles.css" rel="stylesheet">
+<link href="${ctxPath}/resources/css/common/common.css" rel="stylesheet">
 <!--Icons-->
 <script src="${ctxPath}/resources/lib/js/lumino.glyphs.js"></script>
 <!--[if lt IE 9]>
@@ -15,8 +16,11 @@
 <script src="${ctxPath}/resources/lib/js/underscore-1.8.3.min.js"></script>
 <script src="${ctxPath}/resources/lib/js/jquery-1.11.1.min.js"></script>
 <script src="${ctxPath}/resources/lib/js/bootstrap.min.js"></script>
+<script src="${ctxPath}/resources/lib/js/bootstrap-datepicker.js"></script>
+<script src="${ctxPath}/resources/lib/js/bootstrap-datepicker.zh-TW.min.js"></script>
 <script src="${ctxPath}/codeType/codeMap.js"></script>
 <script>
 var ctxPath = '${ctxPath}';
 </script>
-<script src="${ctxPath}/resources/js/common.js"></script>
+<script src="${ctxPath}/resources/js/common/common.js"></script>
+<script src="${ctxPath}/resources/js/common/common.properties.js"></script>
