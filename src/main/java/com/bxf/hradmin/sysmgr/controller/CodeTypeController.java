@@ -31,12 +31,10 @@ import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.bxf.hradmin.common.constant.CodeTypeConstants;
 import com.bxf.hradmin.sysmgr.model.CodeType;
@@ -50,7 +48,6 @@ import com.bxf.hradmin.sysmgr.service.CodeTypeService;
  */
 @Controller
 @RequestMapping("/codeType")
-@Scope(WebApplicationContext.SCOPE_REQUEST)
 public class CodeTypeController {
 
     private static JSONObject _depts = new JSONObject();
@@ -90,20 +87,22 @@ public class CodeTypeController {
     }
 
     private void refreshHrmRoles() {
-        refreshJSONArray(CodeTypeConstants.HRM_ROLE_CAT, _hrmRoles);
+        _hrmRoles = refreshJSONArray(CodeTypeConstants.HRM_ROLE_CAT);
     }
 
     private void refreshHrmTypes() {
-        refreshJSONArray(CodeTypeConstants.HRM_TYPE_CAT, _hrmTypes);
+        _hrmTypes = refreshJSONArray(CodeTypeConstants.HRM_TYPE_CAT);
     }
 
-    private void refreshJSONArray(String codeCat, JSONArray toBeUpdate) {
+    private JSONArray refreshJSONArray(String codeCat) {
+        JSONArray jsonArray = new JSONArray();
         List<CodeType> roles = codeTypeService.findByCodeType(codeCat);
         for (CodeType role : roles) {
             JSONObject roleJSON = new JSONObject();
             roleJSON.put(role.getCodeId(), role.getCodeValue());
-            toBeUpdate.put(roleJSON);
+            jsonArray.put(roleJSON);
         }
+        return jsonArray;
     }
 
     @RequestMapping(value = "/query", produces = { "application/json; charset=UTF-8" }, method = RequestMethod.POST)
