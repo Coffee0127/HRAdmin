@@ -56,7 +56,47 @@ objectclass: inetOrgPerson
 cn: User Hamilton
 sn: Hamilton
 uid: user
-userPassword: {sha}nU4eI71bcnBGqeO0t9tXvY1u5oQ=
+userPassword: {sha}xzuimCxVt+rQ5AmKkvcivbOjs9g=
+
+dn: cn=user2,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Bo-Xuan Fan
+sn: Xuan
+uid: user2
+userPassword: {sha}xzuimCxVt+rQ5AmKkvcivbOjs9g=
+
+dn: cn=user21,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Bo-Xuan Fan
+sn: Xuan
+uid: user21
+userPassword: {sha}xzuimCxVt+rQ5AmKkvcivbOjs9g=
+
+dn: cn=user3,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Bo-Xuan Fan
+sn: Xuan
+uid: user3
+userPassword: {sha}xzuimCxVt+rQ5AmKkvcivbOjs9g=
+
+dn: cn=user4,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Bo-Xuan Fan
+sn: Xuan
+uid: user4
+userPassword: {sha}xzuimCxVt+rQ5AmKkvcivbOjs9g=
 
 dn: cn=joe,ou=otherpeople,dc=springframework,dc=org
 objectclass: top
