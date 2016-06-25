@@ -38,7 +38,7 @@ public enum CaseStatus {
     /** 未通過狀態 **/
     UNPASSED_CASE_STATUS("03"),
     /** 已回覆狀態 **/
-    RESPONSE_CASE_STATUS("04"),
+    REPLY_CASE_STATUS("04"),
     /** 處理中狀態 **/
     HANDLING_CASE_STATUS("05"),
     /** 已結案狀態 **/
