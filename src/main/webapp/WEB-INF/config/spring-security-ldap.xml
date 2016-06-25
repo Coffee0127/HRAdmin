@@ -38,6 +38,9 @@
             username-parameter="username" password-parameter="password" />
             
         <logout logout-success-url="/loginPage" />
+
+        <!-- 存取限制 -->
+        <access-denied-handler ref="accessDeniedHandler" />
     </http>
     
     <authentication-manager>
@@ -60,5 +63,13 @@
         <beans:constructor-arg name="authoritiesPopulator">
             <beans:bean class="com.bxf.hradmin.security.LdapAuthoritiesPopulator" />
         </beans:constructor-arg>
+    </beans:bean>
+    
+    <!-- 存取限制 Handler -->
+    <beans:bean id="accessDeniedHandler" class="com.bxf.hradmin.security.AccessDeniedHandler">
+        <!-- 預設重導頁面 -->
+        <beans:property name="defaultRedirectUrl" value="/" />
+        <!-- 幾秒後重導 -->
+        <beans:property name="timeToRedirect" value="5" />
     </beans:bean>
 </beans:beans>
