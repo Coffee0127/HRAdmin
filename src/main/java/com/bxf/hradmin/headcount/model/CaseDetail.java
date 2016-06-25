@@ -56,6 +56,10 @@ public class CaseDetail {
     @Column(name = "CASE_STATUS")
     private String caseStatus;
 
+    /** 處理人 */
+    @Column(name = "UPDATER")
+    private String updater;
+
     /** 訊息內容 */
     @Column(name = "MSG_DETAIL")
     private String msgDetail;
@@ -86,6 +90,14 @@ public class CaseDetail {
 
     public void setCaseStatus(String caseStatus) {
         this.caseStatus = caseStatus;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
     }
 
     public String getMsgDetail() {

@@ -41,6 +41,9 @@ public class CaseDetailDto {
     /** 案件狀態 */
     private String caseStatus;
 
+    /** 處理人 */
+    private String updater;
+
     /** 訊息內容 */
     private String msgDetail;
 
@@ -69,6 +72,14 @@ public class CaseDetailDto {
 
     public void setCaseStatus(String caseStatus) {
         this.caseStatus = caseStatus;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
     }
 
     public String getMsgDetail() {
