@@ -1,19 +1,19 @@
 $(function() {
 
-	// append caseStatus
-	for (var key in Properties.CaseStatus) {
-		var value = Properties.CaseStatus[key];
-		$('#caseStatus').append(
-			$('<option>', {
-				'value': value,
-				'html': codeTypeFormatter(value)
-			})
-		);
-	}
+    // append caseStatus
+    for (var key in Properties.CaseStatus) {
+        var value = Properties.CaseStatus[key];
+        $('#caseStatus').append(
+            $('<option>', {
+                'value': value,
+                'html': codeTypeFormatter(value)
+            })
+        );
+    }
 
-	var _units = sessionStorage.getItem('_units') && JSON.parse(sessionStorage.getItem('_units')) || {};
-	// append dept, unit, hrmRole, hrmType
-	$.ajax({
+    var _units = sessionStorage.getItem('_units') && JSON.parse(sessionStorage.getItem('_units')) || {};
+    // append dept, unit, hrmRole, hrmType
+    $.ajax({
         url: url('/codeType/query'),
         type: 'post'
     })
@@ -86,17 +86,17 @@ $(function() {
     });
 
     $('.icon-date-picker').on('click', function() {
-    	$(this).prev().trigger('focus').datepicker('show');
+        $(this).prev().trigger('focus').datepicker('show');
     });
-	$('#beginDatetime').datepicker({
-		endDate: '0d'
-	});
-	$('#endDateTime').datepicker({})
-    	// TODO if set endDate first, update today would fail
-    	.datepicker('update', new Date())
+    $('#beginDatetime').datepicker({
+        endDate: '0d'
+    });
+    $('#endDateTime').datepicker({})
+        // TODO if set endDate first, update today would fail
+        .datepicker('update', new Date())
         .datepicker('setEndDate', '0d');
-	$('#requiredBeginDate').datepicker({});
-	$('#requiredEndDate').datepicker({});
+    $('#requiredBeginDate').datepicker({});
+    $('#requiredEndDate').datepicker({});
 
     projFormatter = function(value, row) {
         return row.projectCode + '-' + row.projectName;
@@ -107,10 +107,12 @@ $(function() {
     };
 
     var $confirmForm = $('#confirmForm'),
+        $applierForm = $('#applierResponseForm'),
         $hrConfirmForm = $('#hrConfirmForm'),
         // real query condition
-    	_queryCond = {};
+        _queryCond = {};
     $confirmForm.validationEngine({ scroll: false });
+    $applierForm.validationEngine({ scroll: false });
     $hrConfirmForm.validationEngine({ scroll: false });
 
     $('#dataTable').bootstrapTable({
@@ -128,17 +130,15 @@ $(function() {
         }
     }).hideColumns([ 'preCaseStatus', 'requiredSkill', 'requiredBeginDate', 'requiredEndDate', 'reason', 'note' ]);
 
-	$('#btnQuery').on('click', function() {
-		// TODO #1647 refresh with select page 1
-		$('#dataTable').bootstrapTable('getOptions').sidePagination = 'client';
-		$('#dataTable').bootstrapTable('selectPage', 1);
-		$('#dataTable').bootstrapTable('getOptions').sidePagination = 'server';
-		_queryCond = $('#queryCondForm').serializeObject();
-		$('#dataTable').bootstrapTable('refresh', {
-// 			query: $('#queryCondForm').serializeObject()
-		});
-		return false;
-	});
+    $('#btnQuery').on('click', function() {
+        // TODO #1647 refresh with select page 1
+        $('#dataTable').bootstrapTable('getOptions').sidePagination = 'client';
+        $('#dataTable').bootstrapTable('selectPage', 1);
+        $('#dataTable').bootstrapTable('getOptions').sidePagination = 'server';
+        _queryCond = $('#queryCondForm').serializeObject();
+        $('#dataTable').bootstrapTable('refresh', {});
+        return false;
+    });
 
     var _editedCaseId, _$editedCaseRow;
     $('#caseModal').on('show.bs.modal', function (event) {
@@ -160,21 +160,25 @@ $(function() {
             var $caseModal = $('#caseModal');
             // reset tab
             $caseModal.find('div.tabs ul.nav li a:first').tab('show')
-               // reset form
+               // reset all forms
                .end().find('#msgDetail').hide()
-               .end().find('form')[0].reset();
+               .end().find('form').each(function(index, element) {
+                   $(element)[0].reset();
+               });
             // clear previous validation
-            $confirmForm.validationEngine('hideAll');
-            if (caseMain.caseStatus == Properties.CaseStatus.RECEIVED_CASE_STATUS || caseMain.caseStatus == Properties.CaseStatus.RESPONSE_CASE_STATUS) {
-                $confirmForm.parents('tr').show();
-            } else {
-                $confirmForm.parents('tr').hide();
-            }
-            $hrConfirmForm.validationEngine('hideAll');
-            if (caseMain.caseStatus == Properties.CaseStatus.PASSED_CASE_STATUS) {
-                $hrConfirmForm.parents('tr').show();
-            } else {
-                $hrConfirmForm.parents('tr').hide();
+            $('.confirm-form').validationEngine('hideAll').parents('tr').hide();
+            switch (caseMain.caseStatus) {
+                case Properties.CaseStatus.RECEIVED_CASE_STATUS:
+                case Properties.CaseStatus.REPLY_CASE_STATUS:
+                    $confirmForm.parents('tr').show();
+                    break;
+                case Properties.CaseStatus.UNPASSED_CASE_STATUS:
+                    $applierForm.parents('tr').show();
+                    break;
+                case Properties.CaseStatus.PASSED_CASE_STATUS:
+                case Properties.CaseStatus.HANDLING_CASE_STATUS:
+                    $hrConfirmForm.parents('tr').show();
+                    break;
             }
             $caseModal.find('table.table div[data-field]').html('-');
             for (var key in caseMain) {
@@ -186,6 +190,7 @@ $(function() {
                         var $tr = $('<tr>');
                         $tr.append($('<td>', { text: codeTypeFormatter(detail['caseStatus']), 'class': 'text-center' }));
                         $tr.append($('<td>', { text: dateFormatter(detail['updateDatetime']), 'class': 'text-center' }));
+                        $tr.append($('<td>', { text: detail['updater'], 'class': 'text-center' }));
                         $tr.append($('<td>', { text: detail['msgDetail'] }));
                         $table.append($tr);
                     });
@@ -214,16 +219,22 @@ $(function() {
         return false;
     });
 
-    $('#btnConfirm').on('click', function() {
-        if ($confirmForm.validationEngine('validate')) {
+    var submitForm = function(form, url, callback) {
+        var $form = $(form);
+        if ($form.validationEngine('validate')) {
             $.ajax({
-                url: url('/headcount/confirm'),
+                url: url,
                 type: 'post',
-                data: $.extend({}, $confirmForm.serializeObject(), {
+                data: $.extend({}, $form.serializeObject(), {
                     caseId: _editedCaseId
                 })
             })
             .done(function(msg) {
+                if (callback != null) {
+                    callback.call(null, msg);
+                    return;
+                }
+
                 if (msg.code == 0) {
                     showHintMessage('處理完畢!');
                     // update the dataTable
@@ -239,7 +250,31 @@ $(function() {
                 }
             });
         }
-
         return false;
+    };
+
+    // 同意 / 不同意
+    $('#btnConfirm').on('click', function() {
+        return submitForm($confirmForm, url('/headcount/confirm'));
+    });
+
+    // 申請者回覆
+    $('#btnApplierReply').on('click', function() {
+        return submitForm($applierForm, url('/headcount/reply'));
+    });
+
+    // 申請者放棄申請
+    $('#btnApplierDiscard').on('click', function() {
+        return submitForm($applierForm, url('/headcount/dispose'));
+    });
+
+    // HR 處理
+    $('#btnHRConfirm').on('click', function() {
+        return submitForm($hrConfirmForm, url('/headcount/process'));
+    });
+
+    // HR 結案
+    $('#btnHRClose').on('click', function() {
+        return submitForm($hrConfirmForm, url('/headcount/close'));
     });
 });
