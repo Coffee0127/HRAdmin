@@ -23,6 +23,10 @@
  */
 package com.bxf.hradmin.aamgr.dto;
 
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+
 /**
  * IUser
  *
@@ -42,6 +46,13 @@ public interface IUser {
      * @return
      */
     String getName();
+
+
+    /**
+     * 取得使用者權限
+     * @return
+     */
+    Collection<? extends GrantedAuthority> getAuthorities();
 
     /**
      * 帳號是否啟用

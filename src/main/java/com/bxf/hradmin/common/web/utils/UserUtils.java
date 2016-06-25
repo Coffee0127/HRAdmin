@@ -34,8 +34,8 @@ import org.springframework.security.ldap.userdetails.LdapUserDetails;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.bxf.hradmin.aamgr.dto.AppUserDto;
 import com.bxf.hradmin.aamgr.dto.IUser;
-import com.bxf.hradmin.aamgr.dto.UserDto;
 
 /**
  * UserUtils
@@ -56,11 +56,11 @@ public final class UserUtils {
      */
     public static IUser getUser() throws AuthenticationException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDto user = null;
+        AppUserDto user = null;
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
             if (principal != null) {
-                user = new UserDto();
+                user = new AppUserDto();
                 user.setSourceIp(getUserSourceIp());
                 // xml defined user
                 /*if (principal instanceof org.springframework.security.core.userdetails.User) {
@@ -73,6 +73,7 @@ public final class UserUtils {
                     String userName = String.valueOf(LdapUtils.getValue(ldapName, "cn"));
                     user.setName(userName);
                     user.setAccount(ldapUserDetails.getUsername());
+                    user.setAuthorities(ldapUserDetails.getAuthorities());
                 }
             }
         }

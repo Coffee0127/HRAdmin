@@ -21,30 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.security;
+package com.bxf.hradmin.aamgr.dto;
 
-import java.util.Collection;
+import java.io.Serializable;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.core.GrantedAuthority;
 
-import com.bxf.hradmin.aamgr.service.AuthService;
-
 /**
- * LdapAuthoritiesPopulator
+ * AppAuthorizationDto
  *
- * @since 2016-05-22
+ * @since 2016-06-18
  * @author Bo-Xuan Fan
  */
-public class LdapAuthoritiesPopulator implements org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator {
+public class AppAuthorizationDto implements Serializable, GrantedAuthority {
 
-    @Autowired
-    private AuthService authService;
+    private static final long serialVersionUID = 5555666759564329047L;
+
+    private String userAccount;
+    private AppRoleDto role;
+
+    public String getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    public AppRoleDto getRole() {
+        return role;
+    }
+
+    public void setRole(AppRoleDto role) {
+        this.role = role;
+    }
 
     @Override
-    public Collection<? extends GrantedAuthority> getGrantedAuthorities (
-            DirContextOperations userData, String username) {
-        return authService.findAuthorization(username);
+    public String getAuthority() {
+        return role.getCode();
     }
 }

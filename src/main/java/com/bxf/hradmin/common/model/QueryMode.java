@@ -21,30 +21,69 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.security;
-
-import java.util.Collection;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.security.core.GrantedAuthority;
-
-import com.bxf.hradmin.aamgr.service.AuthService;
+package com.bxf.hradmin.common.model;
 
 /**
- * LdapAuthoritiesPopulator
+ * QueryMode
  *
- * @since 2016-05-22
+ * @since 2016-06-25
  * @author Bo-Xuan Fan
  */
-public class LdapAuthoritiesPopulator implements org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator {
+public enum QueryMode {
 
-    @Autowired
-    private AuthService authService;
+    /** in */
+    IN("in"),
+    /** not in */
+    NOT_IN("notIn"),
+    /** = */
+    EQUALS("eq"),
+    /** != */
+    NOT_EQUALS("ne"),
+    /** like */
+    LIKE("like"),
+    /** not like */
+    NOT_LIKE("notLike"),
+    /** > */
+    GREATER_THAN("gt"),
+    /** >= */
+    GREATER_EQUALS("ge"),
+    /** < */
+    LESS_THAN("lt"),
+    /** <= */
+    LESS_EQUALS("le"),
+    /** is null */
+    IS_NULL("isNull"),
+    /** is null */
+    IS_NOT_NULL("isNotNull"),
+    /** between and */
+    BETWEEN("between"),
+    /** or */
+    OR("or"),
+    /** and */
+    AND("and");
+
+    private String code;
+
+    QueryMode(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public static final QueryMode convert(String code) {
+        for (QueryMode searchMode : QueryMode.values()) {
+            if (searchMode.getCode().equals(code)) {
+                return searchMode;
+            }
+        }
+        // default
+        return EQUALS;
+    }
 
     @Override
-    public Collection<? extends GrantedAuthority> getGrantedAuthorities (
-            DirContextOperations userData, String username) {
-        return authService.findAuthorization(username);
+    public String toString() {
+        return code;
     }
 }

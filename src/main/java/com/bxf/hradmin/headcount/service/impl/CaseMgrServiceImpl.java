@@ -23,16 +23,18 @@
  */
 package com.bxf.hradmin.headcount.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,8 +46,11 @@ import org.springframework.stereotype.Service;
 
 import com.bxf.hradmin.common.constant.CaseStatus;
 import com.bxf.hradmin.common.exception.HRHeadCountException;
+import com.bxf.hradmin.common.model.QueryMode;
 import com.bxf.hradmin.common.model.QueryPage;
+import com.bxf.hradmin.common.model.QueryParameter;
 import com.bxf.hradmin.common.utils.BeanUtils;
+import com.bxf.hradmin.common.utils.QueryParameterTransformer;
 import com.bxf.hradmin.common.web.utils.UserUtils;
 import com.bxf.hradmin.headcount.dto.CaseDetailDto;
 import com.bxf.hradmin.headcount.dto.CaseMainDto;
@@ -64,11 +69,33 @@ import com.bxf.hradmin.headcount.service.CaseMgrService;
 @Service
 public class CaseMgrServiceImpl implements CaseMgrService {
 
+    private static final Map<String, CaseStatusJudger> JUDGERS = new HashMap<>();
+
     @Autowired
     private CaseMainRepository mainRepository;
 
     @Autowired
     private CaseDetailRepository detailRepository;
+
+    static {
+        JUDGERS.put(CaseStatusJudger.CONFIRM_CASE, (caseStatus, preCaseStatus) -> {
+            return preCaseStatus == null ||
+                    CaseStatus.REPLY_CASE_STATUS.getCode().equals(caseStatus);
+        });
+        JUDGERS.put(CaseStatusJudger.REPLY_CASE, (caseStatus, preCaseStatus) -> {
+            return CaseStatus.UNPASSED_CASE_STATUS.getCode().equals(caseStatus);
+        });
+        JUDGERS.put(CaseStatusJudger.DISPOSED_CASE, (caseStatus, preCaseStatus) -> {
+            return CaseStatus.UNPASSED_CASE_STATUS.getCode().equals(caseStatus);
+        });
+        JUDGERS.put(CaseStatusJudger.HANDLING_CASE, (caseStatus, preCaseStatus) -> {
+            return CaseStatus.PASSED_CASE_STATUS.getCode().equals(caseStatus) ||
+                    CaseStatus.HANDLING_CASE_STATUS.getCode().equals(caseStatus);
+        });
+        JUDGERS.put(CaseStatusJudger.CLOSE_CASE, (caseStatus, preCaseStatus) -> {
+            return CaseStatus.HANDLING_CASE_STATUS.getCode().equals(caseStatus);
+        });
+    }
 
     @Override
     public void saveCaseMain(CaseMainDto caseMain) {
@@ -83,6 +110,7 @@ public class CaseMgrServiceImpl implements CaseMgrService {
         CaseDetail detail = new CaseDetail();
         detail.setCaseId(domain.getCaseId());
         detail.setUpdateDatetime(updateDatetime);
+        detail.setUpdater(UserUtils.getUser().getName());
         detail.setCaseStatus(CaseStatus.RECEIVED_CASE_STATUS.getCode());
         detailRepository.save(detail);
     }
@@ -103,61 +131,31 @@ public class CaseMgrServiceImpl implements CaseMgrService {
         return result;
     }
 
-    private Predicate generateCondition(CaseMainDto queryCond,
-            Root<CaseMain> root, CriteriaBuilder criteriaBuilder) {
-        Predicate condition = criteriaBuilder.conjunction();
-        if (StringUtils.isNotBlank(queryCond.getCaseId())) {
-            condition = criteriaBuilder.and(condition, criteriaBuilder.like(root.<String>get("caseId"), "%" + queryCond.getCaseId() + "%"));
-        }
-
-        if (queryCond.getBeginDatetime() != null) {
-            condition = criteriaBuilder.and(condition, criteriaBuilder
-                    .greaterThanOrEqualTo(root.<Date>get("updateDatetime"),
-                            generateBeginDatetime(queryCond.getBeginDatetime())));
-        }
-
-        if (queryCond.getEndDateTime() != null) {
-            condition = criteriaBuilder.and(condition, criteriaBuilder
-                    .lessThanOrEqualTo(root.<Date>get("updateDatetime"),
-                            generateEndDatetime(queryCond.getEndDateTime())));
-        }
-
-        if (StringUtils.isNotEmpty(queryCond.getCaseStatus())) {
-            condition = criteriaBuilder.and(condition, criteriaBuilder.equal(root.get("caseStatus"), queryCond.getCaseStatus()));
-        }
-
-        if (StringUtils.isNotEmpty(queryCond.getDept())) {
-            condition = criteriaBuilder.and(condition, criteriaBuilder.equal(root.get("dept"), queryCond.getDept()));
-        }
-
-        if (StringUtils.isNotEmpty(queryCond.getUnit())) {
-            condition = criteriaBuilder.and(condition, criteriaBuilder.equal(root.get("unit"), queryCond.getUnit()));
-        }
-
-        if (StringUtils.isNotEmpty(queryCond.getHrmRole())) {
-            condition = criteriaBuilder.and(condition, criteriaBuilder.equal(root.get("hrmRole"), queryCond.getHrmRole()));
-        }
-
-        if (StringUtils.isNotEmpty(queryCond.getHrmType())) {
-            condition = criteriaBuilder.and(condition, criteriaBuilder.equal(root.get("hrmType"), queryCond.getHrmType()));
-        }
-
-        if (queryCond.getRequiredBeginDate() != null) {
-            condition = criteriaBuilder.and(condition, criteriaBuilder
-                    .greaterThanOrEqualTo(root.<Date>get("requiredBeginDate"),
-                            generateBeginDatetime(queryCond.getRequiredBeginDate())));
-        }
-
-        if (queryCond.getRequiredEndDate() != null) {
-            condition = criteriaBuilder.and(condition, criteriaBuilder
-                    .lessThanOrEqualTo(root.<Date>get("requiredEndDate"),
-                            generateEndDatetime(queryCond.getRequiredEndDate())));
-        }
-
-        return condition;
+    private Predicate generateCondition(CaseMainDto queryCond, Root<CaseMain> root, CriteriaBuilder criteriaBuilder) {
+        List<QueryParameter> queryParameters = new ArrayList<>();
+        queryParameters.add(new QueryParameter(QueryMode.LIKE, "caseId", queryCond.getCaseId()));
+        queryParameters.add(new QueryParameter(QueryMode.GREATER_EQUALS,
+                "updateDatetime", generateBeginDatetime(queryCond.getBeginDatetime())));
+        queryParameters.add(new QueryParameter(QueryMode.LESS_EQUALS,
+                "updateDatetime", generateBeginDatetime(queryCond.getEndDateTime())));
+        queryParameters.add(new QueryParameter(QueryMode.EQUALS, "caseStatus", queryCond.getCaseStatus()));
+        queryParameters.add(new QueryParameter(QueryMode.EQUALS, "dept", queryCond.getDept()));
+        queryParameters.add(new QueryParameter(QueryMode.EQUALS, "unit", queryCond.getUnit()));
+        queryParameters.add(new QueryParameter(QueryMode.EQUALS, "hrmRole", queryCond.getHrmRole()));
+        queryParameters.add(new QueryParameter(QueryMode.EQUALS, "hrmType", queryCond.getHrmType()));
+        queryParameters.add(new QueryParameter(QueryMode.EQUALS, "applier", queryCond.getApplier()));
+        queryParameters.add(new QueryParameter(QueryMode.GREATER_EQUALS,
+                "requiredBeginDate", generateBeginDatetime(queryCond.getRequiredBeginDate())));
+        queryParameters.add(new QueryParameter(QueryMode.LESS_EQUALS,
+                "requiredEndDate", generateEndDatetime(queryCond.getRequiredEndDate())));
+        return QueryParameterTransformer.generatePredicate(root, criteriaBuilder, queryParameters.toArray(new QueryParameter[0]));
     }
 
     private Date generateBeginDatetime(Date date) {
+        if (date == null) {
+            return null;
+        }
+
         Calendar beginDatetime = new GregorianCalendar();
         beginDatetime.setTime(date);
         beginDatetime.set(Calendar.HOUR_OF_DAY, 0);
@@ -168,6 +166,10 @@ public class CaseMgrServiceImpl implements CaseMgrService {
     }
 
     private Date generateEndDatetime(Date date) {
+        if (date == null) {
+            return null;
+        }
+
         Calendar endDatetime = new GregorianCalendar();
         endDatetime.setTime(date);
         endDatetime.set(Calendar.HOUR_OF_DAY, 23);
@@ -182,10 +184,12 @@ public class CaseMgrServiceImpl implements CaseMgrService {
         if (caseId == null) {
             return null;
         }
+
         CaseMain domain = mainRepository.findOne(caseId);
         if (domain == null) {
             return null;
         }
+
         CaseMainDto caseMain = BeanUtils.copyProperties(CaseMainDto.class, domain);
         List<CaseDetail> domainDetails = detailRepository.findByCaseId(caseId);
         caseMain.setCaseDetails(BeanUtils.copyListProperties(CaseDetailDto.class, domainDetails));
@@ -195,7 +199,7 @@ public class CaseMgrServiceImpl implements CaseMgrService {
     @Override
     public void updateConfirmCase(String caseId, boolean confirm, String msgDetail) {
         CaseMain caseMain = mainRepository.findOne(caseId);
-        if (!isValidCaseStatus(caseMain)) {
+        if (!JUDGERS.get(CaseStatusJudger.CONFIRM_CASE).validCaseStatus(caseMain.getCaseStatus(), caseMain.getPreCaseStatus())) {
             throw new HRHeadCountException("Unsupported case operation.");
         }
 
@@ -208,16 +212,59 @@ public class CaseMgrServiceImpl implements CaseMgrService {
         caseMain.setUpdateDatetime(new Date());
         mainRepository.save(caseMain);
 
+        saveCaseDetail(msgDetail, caseMain);
+    }
+
+    @Override
+    public void updateReplyCase(String caseId, String msgDetail) {
+        doUpdate(caseId, msgDetail, CaseStatusJudger.REPLY_CASE, CaseStatus.REPLY_CASE_STATUS.getCode());
+    }
+
+    @Override
+    public void updateDisposedCase(String caseId, String msgDetail) {
+        doUpdate(caseId, msgDetail, CaseStatusJudger.DISPOSED_CASE, CaseStatus.DISPOSED_CASE_STATUS.getCode());
+    }
+
+    @Override
+    public void updateProcessCase(String caseId, String msgDetail) {
+        doUpdate(caseId, msgDetail, CaseStatusJudger.HANDLING_CASE, CaseStatus.HANDLING_CASE_STATUS.getCode());
+    }
+
+    @Override
+    public void updateCloseCase(String caseId, String msgDetail) {
+        doUpdate(caseId, msgDetail, CaseStatusJudger.CLOSE_CASE, CaseStatus.CLOSE_CASE_STATUS.getCode());
+    }
+
+    private void doUpdate(String caseId, String msgDetail, String judgerCode, String caseStatusCode) {
+        CaseMain caseMain = mainRepository.findOne(caseId);
+        if (!JUDGERS.get(judgerCode).validCaseStatus(caseMain.getCaseStatus(), caseMain.getPreCaseStatus())) {
+            throw new HRHeadCountException("Unsupported case operation.");
+        }
+
+        caseMain.setPreCaseStatus(caseMain.getCaseStatus());
+        caseMain.setCaseStatus(caseStatusCode);
+        caseMain.setUpdateDatetime(new Date());
+        mainRepository.save(caseMain);
+        saveCaseDetail(msgDetail, caseMain);
+    }
+
+    private void saveCaseDetail(String msgDetail, CaseMain caseMain) {
         CaseDetail caseDetail = new CaseDetail();
         caseDetail.setCaseId(caseMain.getCaseId());
         caseDetail.setCaseStatus(caseMain.getCaseStatus());
+        caseDetail.setUpdater(UserUtils.getUser().getName());
         caseDetail.setUpdateDatetime(caseMain.getUpdateDatetime());
         caseDetail.setMsgDetail(msgDetail);
         detailRepository.save(caseDetail);
     }
 
-    private boolean isValidCaseStatus(CaseMain caseMain) {
-        String preCaseStatus = caseMain.getPreCaseStatus();
-        return preCaseStatus == null || CaseStatus.RESPONSE_CASE_STATUS.getCode().equals(preCaseStatus);
+    @FunctionalInterface
+    private interface CaseStatusJudger {
+        String CONFIRM_CASE = "confirmCase";
+        String REPLY_CASE = "replyCase";
+        String DISPOSED_CASE = "discardCase";
+        String HANDLING_CASE = "processCase";
+        String CLOSE_CASE = "closeCase";
+        boolean validCaseStatus(String caseStatus, String preCaseStatus);
     }
 }

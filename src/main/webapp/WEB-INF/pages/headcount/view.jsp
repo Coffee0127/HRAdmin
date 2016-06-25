@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html lang="en">
 <link href="${ctxPath}/resources/lib/css/bootstrap-table.css" rel="stylesheet" />
@@ -8,25 +9,6 @@
 <script src="${ctxPath}/resources/lib/js/jquery.validationEngine-zh_TW.js"></script>
 <script src="${ctxPath}/resources/lib/js/jquery.validationEngine.js"></script>
 <script src="${ctxPath}/resources/js/headcount/view.js"></script>
-<style>
-.editTable {
-    border-bottom: none;
-}
-.editTable>tbody>tr:first-child>td {
-    border-top: none;
-}
-#dataTable>tbody>tr>td, .editTable>tbody>tr>td {
-    vertical-align: middle;
-}
-#dataTable>tbody>tr.edited>td {
-    background: #d9edf7;
-    border-color: #d9edf7;
-}
-
-.editTable textarea {
-    resize: vertical;
-}
-</style>
 <body>
 <div class="row">
     <div class="col-lg-12">
@@ -229,34 +211,68 @@
                                         <td class="col-md-4">申請人</td>
                                         <td class="col-md-8"><div data-field="applier"></div></td>
                                     </tr>
-                                    <tr style="display: none;">
-                                        <td class="col-md-4">處理結果與說明</td>
-                                        <td class="col-md-8 radio">
-                                            <form id="confirmForm">
-                                                <div class="form-group">
-                                                    <label style="margin-right: 1em;">
-                                                        <input type="radio" name="confirm" value="Y" class="validate[required]">同意
-                                                    </label>
-                                                    <label>
-                                                        <input id="confirm_N" type="radio" name="confirm" value="N" class="validate[required]">拒絕
-                                                    </label>
-                                                    <textarea id="msgDetail" name="msgDetail" class="form-control validate[condRequired[confirm_N]]" style="display: none; margin-top: 0.5em;" rows="3" placeholder="請填寫拒絕原因"></textarea>
-                                                </div>
-                                                <button id="btnConfirm" type="button" class="btn btn-primary"><span class="p-r-5 glyphicon glyphicon-ok"></span>確認</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <tr style="display: none;">
-                                        <td class="col-md-4">人資處理紀錄</td>
-                                        <td class="col-md-8">
-                                            <form id="hrConfirmForm">
-                                                <div class="form-group">
-                                                    <textarea id="processMsgDetail" name="processMsgDetail" class="form-control validate[required]" rows="3" placeholder="請填寫紀錄"></textarea>
-                                                </div>
-                                                <button id="btnHRConfirm" type="button" class="btn btn-primary"><span class="p-r-5 glyphicon glyphicon-ok"></span>確認</button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                    <sec:authorize access="hasRole('ROLE_CONFIRMER')">
+                                        <tr style="display: none;">
+                                            <td class="col-md-4">處理結果與說明</td>
+                                            <td class="col-md-8 radio">
+                                                <form id="confirmForm" class="confirm-form">
+                                                    <div class="checkbox" style="margin-top: 0">
+                                                        <label>
+                                                            <input name="cc" type="checkbox" value="Y" checked="checked" />通知相關人員
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label style="margin-right: 1em;">
+                                                            <input type="radio" name="confirm" value="Y" class="validate[required]">同意
+                                                        </label>
+                                                        <label>
+                                                            <input id="confirm_N" type="radio" name="confirm" value="N" class="validate[required]">拒絕
+                                                        </label>
+                                                        <textarea id="msgDetail" name="msgDetail" class="form-control validate[condRequired[confirm_N]]" style="display: none; margin-top: 0.5em;" rows="3" placeholder="請填寫拒絕原因"></textarea>
+                                                    </div>
+                                                    <button id="btnConfirm" class="btn btn-primary"><span class="p-r-5 glyphicon glyphicon-edit"></span>確認</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasRole('ROLE_APPLIER')">
+                                        <tr style="display: none;">
+                                            <td class="col-md-4">申請者回覆</td>
+                                            <td class="col-md-8">
+                                                <form id="applierResponseForm" class="confirm-form">
+                                                    <div class="checkbox" style="margin-top: 0">
+                                                        <label>
+                                                            <input name="cc" type="checkbox" value="Y" checked="checked" />通知相關人員
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <textarea id="responseMsgDetail" name="responseMsgDetail" class="form-control validate[required]" rows="3" placeholder="請填寫回覆"></textarea>
+                                                    </div>
+                                                    <button id="btnApplierReply" class="btn btn-primary"><span class="p-r-5 glyphicon glyphicon-edit"></span>確認</button>
+                                                    <button id="btnApplierDiscard" class="btn btn-danger"><span class="p-r-5 glyphicon glyphicon-trash"></span>放棄申請</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasRole('ROLE_HR')">
+                                        <tr style="display: none;">
+                                            <td class="col-md-4">人資處理紀錄</td>
+                                            <td class="col-md-8">
+                                                <form id="hrConfirmForm" class="confirm-form">
+                                                    <div class="checkbox" style="margin-top: 0">
+                                                        <label>
+                                                            <input name="cc" type="checkbox" value="Y" checked="checked" />通知相關人員
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <textarea id="processMsgDetail" name="processMsgDetail" class="form-control validate[required]" rows="3" placeholder="請填寫紀錄"></textarea>
+                                                    </div>
+                                                    <button id="btnHRConfirm" class="btn btn-primary"><span class="p-r-5 glyphicon glyphicon-edit"></span>確認</button>
+                                                    <button id="btnHRClose" class="btn btn-warning"><span class="p-r-5 glyphicon glyphicon-check"></span>結案</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </sec:authorize>
                                 </table>
                             </div>
                             <div class="tab-pane fade" id="pilltab2">
@@ -264,6 +280,7 @@
                                     <tr>
                                         <th class="col-md-2 text-center">狀態</th>
                                         <th class="col-md-3 text-center">更新時間</th>
+                                        <th class="col-md-2 text-center">處理人</th>
                                         <th class="col-md-6 text-center">訊息內容</th>
                                     </tr>
                                 </table>

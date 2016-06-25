@@ -21,30 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.security;
+package com.bxf.hradmin.aamgr.repositories;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.security.core.GrantedAuthority;
-
-import com.bxf.hradmin.aamgr.service.AuthService;
+import org.springframework.data.repository.query.Param;
 
 /**
- * LdapAuthoritiesPopulator
+ * AuthRepository
  *
- * @since 2016-05-22
+ * @since 2016-06-18
  * @author Bo-Xuan Fan
  */
-public class LdapAuthoritiesPopulator implements org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator {
+public interface AuthRepository {
 
-    @Autowired
-    private AuthService authService;
+    List<Long> findRoleIdsByAccount(@Param("account") String account);
 
-    @Override
-    public Collection<? extends GrantedAuthority> getGrantedAuthorities (
-            DirContextOperations userData, String username) {
-        return authService.findAuthorization(username);
-    }
+    List<Long> findFuncIdsByRoleId(@Param("roleId") Long roleId);
 }

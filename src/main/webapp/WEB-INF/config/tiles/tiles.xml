@@ -25,4 +25,9 @@
 		<put-attribute name="content" value="/WEB-INF/pages/headcount/apply.jsp" />
 	</definition>
 
+    <!-- Users definition -->
+    <definition name="viewUsers" extends="base.layout">
+        <put-attribute name="title" value="HR Admin - Users Adming Page" />
+        <put-attribute name="content" value="/WEB-INF/pages/aamgr/view.jsp" />
+    </definition>
 </tiles-definitions>

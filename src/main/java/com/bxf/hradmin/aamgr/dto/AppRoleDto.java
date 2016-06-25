@@ -21,30 +21,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.security;
+package com.bxf.hradmin.aamgr.dto;
 
-import java.util.Collection;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.security.core.GrantedAuthority;
-
-import com.bxf.hradmin.aamgr.service.AuthService;
+import java.io.Serializable;
+import java.util.List;
 
 /**
- * LdapAuthoritiesPopulator
+ * AppRoleDto
  *
- * @since 2016-05-22
+ * @since 2016-06-18
  * @author Bo-Xuan Fan
  */
-public class LdapAuthoritiesPopulator implements org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator {
+public class AppRoleDto implements Serializable {
 
-    @Autowired
-    private AuthService authService;
+    private static final long serialVersionUID = -5268033545077845394L;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getGrantedAuthorities (
-            DirContextOperations userData, String username) {
-        return authService.findAuthorization(username);
+    /** 角色編號 */
+    private Long id;
+    /** 角色代碼 */
+    private String code;
+    /** 角色敘述編號 */
+    private String desc;
+    /** 對應功能 */
+    private List<AppFunctionDto> functions;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public List<AppFunctionDto> getFunctions() {
+        return functions;
+    }
+
+    public void setFunctions(List<AppFunctionDto> functions) {
+        this.functions = functions;
     }
 }

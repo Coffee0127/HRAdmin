@@ -21,30 +21,69 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.security;
+package com.bxf.hradmin.aamgr.dto;
 
-import java.util.Collection;
+import java.io.Serializable;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.security.core.GrantedAuthority;
-
-import com.bxf.hradmin.aamgr.service.AuthService;
 
 /**
- * LdapAuthoritiesPopulator
+ * AppFunctionDto
  *
- * @since 2016-05-22
+ * @since 2016-06-18
  * @author Bo-Xuan Fan
  */
-public class LdapAuthoritiesPopulator implements org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator {
+public class AppFunctionDto implements Serializable {
 
-    @Autowired
-    private AuthService authService;
+    private static final long serialVersionUID = -5809712688334799038L;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getGrantedAuthorities (
-            DirContextOperations userData, String username) {
-        return authService.findAuthorization(username);
+    /** 功能編號 */
+    private Long id;
+    /** 功能代碼 */
+    private String code;
+    /** 功能階層 */
+    private Integer level;
+    /** 功能名稱 */
+    private String name;
+    /** 功能路徑 */
+    private String path;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

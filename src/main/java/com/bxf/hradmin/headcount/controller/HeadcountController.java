@@ -23,7 +23,10 @@
  */
 package com.bxf.hradmin.headcount.controller;
 
+import static com.bxf.hradmin.common.constant.RoleConstants.ROLE_APPLIER;
+
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
@@ -45,6 +48,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bxf.hradmin.aamgr.dto.AppAuthorizationDto;
+import com.bxf.hradmin.common.web.utils.UserUtils;
 import com.bxf.hradmin.headcount.dto.CaseMainDto;
 import com.bxf.hradmin.headcount.service.CaseMgrService;
 
@@ -95,6 +100,11 @@ public class HeadcountController {
             method = RequestMethod.POST)
     @ResponseBody
     public String find(@RequestBody CaseMainDto queryCond) {
+        @SuppressWarnings("unchecked")
+        List<AppAuthorizationDto> authorizations = (List<AppAuthorizationDto>) UserUtils.getUser().getAuthorities();
+        if (isApplierOnly(authorizations)) {
+            queryCond.setApplier(UserUtils.getUser().getName());
+        }
         if (StringUtils.isNotBlank(queryCond.getSort()) && StringUtils.isNotBlank(queryCond.getOrder())) {
             queryCond.setAsc("asc".equalsIgnoreCase(queryCond.getOrder()));
         } else {
@@ -104,20 +114,25 @@ public class HeadcountController {
         return service.find(queryCond).toString();
     }
 
+    private boolean isApplierOnly(List<AppAuthorizationDto> authorizations) {
+        return authorizations.size() == 1 && ROLE_APPLIER.equals(authorizations.get(0).getRole().getCode());
+    }
+
     @RequestMapping(value = "/findOne", produces = { "application/json; charset=UTF-8" })
     @ResponseBody
     public String findOne(@RequestParam("caseId") String caseId) {
         return new JSONObject(service.findOne(caseId)).toString();
     }
 
-    @RequestMapping(value = "/confirm", produces = { "application/json; charset=UTF-8" })
-    @ResponseBody
-    public String confirm(@RequestParam("caseId") String caseId,
-            @RequestParam(value = "confirm") String confirm,
-            @RequestParam("msgDetail") String msgDetail) {
+    @FunctionalInterface
+    private interface HeadcountProcessor {
+        void process();
+    }
+
+    private String doProcess(HeadcountProcessor processor, String caseId) {
         JSONObject result = new JSONObject();
         try {
-            service.updateConfirmCase(caseId, confirm.equalsIgnoreCase("Y"), msgDetail);
+            processor.process();
             result.put("code", 0);
             CaseMainDto caseMain = service.findOne(caseId);
             caseMain.setCaseDetails(null);
@@ -128,5 +143,61 @@ public class HeadcountController {
             result.put("desc", e.getMessage());
         }
         return result.toString();
+    }
+
+    @RequestMapping(value = "/confirm",
+            produces = "application/json; charset=UTF-8",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public String confirm(@RequestParam("caseId") String caseId,
+            @RequestParam(value = "confirm") String confirm,
+            @RequestParam("msgDetail") String msgDetail) {
+        return doProcess(() -> {
+            service.updateConfirmCase(caseId, confirm.equalsIgnoreCase("Y"), msgDetail);
+        }, caseId);
+    }
+
+    @RequestMapping(value = "/reply",
+            produces = "application/json; charset=UTF-8",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public String reply(@RequestParam("caseId") String caseId,
+            @RequestParam("responseMsgDetail") String msgDetail) {
+        return doProcess(() -> {
+            service.updateReplyCase(caseId, msgDetail);
+        }, caseId);
+    }
+
+    @RequestMapping(value = "/dispose",
+            produces = "application/json; charset=UTF-8",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public String dispose(@RequestParam("caseId") String caseId,
+            @RequestParam("responseMsgDetail") String msgDetail) {
+        return doProcess(() -> {
+            service.updateDisposedCase(caseId, msgDetail);
+        }, caseId);
+    }
+
+    @RequestMapping(value = "/process",
+            produces = "application/json; charset=UTF-8",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public String process(@RequestParam("caseId") String caseId,
+            @RequestParam("processMsgDetail") String msgDetail) {
+        return doProcess(() -> {
+            service.updateProcessCase(caseId, msgDetail);
+        }, caseId);
+    }
+
+    @RequestMapping(value = "/close",
+            produces = "application/json; charset=UTF-8",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public String close(@RequestParam("caseId") String caseId,
+            @RequestParam("processMsgDetail") String msgDetail) {
+        return doProcess(() -> {
+            service.updateCloseCase(caseId, msgDetail);
+        }, caseId);
     }
 }

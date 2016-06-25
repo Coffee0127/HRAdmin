@@ -21,30 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.security;
-
-import java.util.Collection;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.security.core.GrantedAuthority;
-
-import com.bxf.hradmin.aamgr.service.AuthService;
+package com.bxf.hradmin.common.constant;
 
 /**
- * LdapAuthoritiesPopulator
+ * RoleConstants
  *
- * @since 2016-05-22
+ * @since 2016-06-25
  * @author Bo-Xuan Fan
  */
-public class LdapAuthoritiesPopulator implements org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator {
+public final class RoleConstants {
 
-    @Autowired
-    private AuthService authService;
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_APPLIER = "ROLE_APPLIER";
+    public static final String ROLE_CONFIRMER = "ROLE_CONFIRMER";
+    public static final String ROLE_HR = "ROLE_HR";
 
-    @Override
-    public Collection<? extends GrantedAuthority> getGrantedAuthorities (
-            DirContextOperations userData, String username) {
-        return authService.findAuthorization(username);
+    private RoleConstants() {
     }
 }

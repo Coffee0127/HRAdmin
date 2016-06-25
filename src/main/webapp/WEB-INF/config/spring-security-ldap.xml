@@ -8,12 +8,30 @@
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
+    <!-- static resources -->
     <http pattern="/resources/**" security="none" />
 
     <http use-expressions="true">
         <csrf disabled="true"/>
         <intercept-url pattern="/loginPage" access="isAnonymous()" />
-        <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+        <!-- pass loged-in users to index -->
+        <intercept-url pattern="/index" access="isAuthenticated()" />
+        <intercept-url pattern="/index.html" access="isAuthenticated()" />
+        <intercept-url pattern="/index.jsp" access="isAuthenticated()" />
+        <intercept-url pattern="/" access="isAuthenticated()" />
+        
+        <intercept-url pattern="/codeType/**" access="isAuthenticated()" />
+        
+        <intercept-url pattern="/headcount/apply" access="hasAnyRole('ROLE_HR', 'ROLE_APPLIER')" />
+        <intercept-url pattern="/headcount/submit" access="hasAnyRole('ROLE_HR', 'ROLE_APPLIER')" />
+        <intercept-url pattern="/headcount/view" access="hasAnyRole('ROLE_HR', 'ROLE_APPLIER', 'ROLE_CONFIRMER')" />
+        <intercept-url pattern="/headcount/find*" access="hasAnyRole('ROLE_HR', 'ROLE_APPLIER', 'ROLE_CONFIRMER')" />
+        <intercept-url pattern="/headcount/confirm" access="hasRole('ROLE_CONFIRMER')" />
+        <intercept-url pattern="/headcount/reply" access="hasRole('ROLE_APPLIER')" />
+        <intercept-url pattern="/headcount/dispose" access="hasRole('ROLE_APPLIER')" />
+        <intercept-url pattern="/headcount/process" access="hasRole('ROLE_HR')" />
+        <intercept-url pattern="/headcount/close" access="hasRole('ROLE_HR')" />
+        <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" />
         
         <form-login login-page="/loginPage" login-processing-url="/login" 
             authentication-failure-url="/loginPage?login_error=1" 

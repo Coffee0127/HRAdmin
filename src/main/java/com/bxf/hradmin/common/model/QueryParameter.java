@@ -21,70 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.aamgr.dto;
+package com.bxf.hradmin.common.model;
 
 /**
- * UserDto
+ * QueryParameter
  *
- * @since 2016-05-12
+ * @since 2016-06-25
  * @author Bo-Xuan Fan
  */
-public class UserDto implements IUser {
+public class QueryParameter {
 
-    /**
-     * 使用者姓名
-     */
-    private String name;
-    /**
-     * 使用者帳號
-     */
-    private String account;
-    /**
-     * 使用者登入ip
-     */
-    private String sourceIp;
+    private QueryMode mode;
+    private String key;
+    private Object value;
 
-    /**
-     * 帳號狀態
-     */
-    private String status;
-
-    @Override
-    public String getName() {
-        return name;
+    public QueryParameter(QueryMode mode, String key, Object value) {
+        super();
+        this.mode = mode;
+        this.key = key;
+        this.value = value;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public QueryMode getMode() {
+        return mode;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public Object getValue() {
+        return value;
     }
 
     @Override
-    public String getAccount() {
-        return account;
+    public String toString() {
+        return new StringBuilder().append(key).append(" ").append(mode).append(" ").append(value).toString();
     }
 
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getSourceIp() {
-        return sourceIp;
-    }
-
-    public void setSourceIp(String sourceIp) {
-        this.sourceIp = sourceIp;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @Override
-    public UserStatus getUserStatus() {
-        return UserStatus.transformCode(status);
-    }
 }

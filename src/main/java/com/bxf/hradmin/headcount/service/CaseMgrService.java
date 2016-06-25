@@ -41,4 +41,12 @@ public interface CaseMgrService {
     CaseMainDto findOne(String caseId);
 
     void updateConfirmCase(String caseId, boolean confirm, String msgDetail);
+
+    void updateReplyCase(String caseId, String msgDetail);
+
+    void updateDisposedCase(String caseId, String msgDetail);
+
+    void updateProcessCase(String caseId, String msgDetail);
+
+    void updateCloseCase(String caseId, String msgDetail);
 }
