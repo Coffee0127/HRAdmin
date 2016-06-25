@@ -13,11 +13,6 @@
 <script src="${ctxPath}/resources/lib/js/html5shiv.js"></script>
 <script src="${ctxPath}/resources/lib/js/respond.min.js"></script>
 <![endif]-->
-<style>
-.error {
-    color: red
-}
-</style>
 </head>
 <body>
     <div>

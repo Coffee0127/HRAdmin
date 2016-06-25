@@ -1,7 +1,12 @@
 @import url("query-cond.css");
+@import url("view.css");
 
 .p-r-5 {
     padding-right: 5px;
+}
+
+.error {
+    color: red
 }
 
 .required label:after {
