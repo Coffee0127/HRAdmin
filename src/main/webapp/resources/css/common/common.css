@@ -9,6 +9,10 @@
     color: red
 }
 
+.text-warning {
+    color: #F3A02C;
+}
+
 .required label:after {
     content: "*";
     color: red;
