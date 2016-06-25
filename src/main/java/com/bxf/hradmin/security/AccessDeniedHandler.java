@@ -42,6 +42,11 @@ import org.springframework.security.access.AccessDeniedException;
 public class AccessDeniedHandler implements org.springframework.security.web.access.AccessDeniedHandler {
 
     /**
+     * 錯誤訊息顯示頁面
+     */
+    private String errorPage = "/WEB-INF/pages/errorPages/403.jsp";
+
+    /**
      * 預設重導頁面
      */
     private String defaultRedirectUrl = "/";
@@ -58,16 +63,24 @@ public class AccessDeniedHandler implements org.springframework.security.web.acc
         request.setAttribute("defaultRedirectUrl", defaultRedirectUrl);
         request.setAttribute("timeToRedirect", timeToRedirect);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/pages/errorPages/403.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher(errorPage);
         dispatcher.forward(request, response);
         return;
     }
 
+    public void setErrorPage(String errorPage) {
+        this.errorPage = correctUrl(errorPage);
+    }
+
     public void setDefaultRedirectUrl(String defaultRedirectUrl) {
-        if (StringUtils.isNotEmpty(defaultRedirectUrl) && !defaultRedirectUrl.startsWith("/")) {
-            defaultRedirectUrl = '/' + defaultRedirectUrl;
+        this.defaultRedirectUrl = correctUrl(defaultRedirectUrl);
+    }
+
+    private String correctUrl(String url) {
+        if (StringUtils.isNotEmpty(url) && !url.startsWith("/")) {
+            url = '/' + url;
         }
-        this.defaultRedirectUrl = defaultRedirectUrl;
+        return url;
     }
 
     /**

@@ -67,6 +67,8 @@
     
     <!-- 存取限制 Handler -->
     <beans:bean id="accessDeniedHandler" class="com.bxf.hradmin.security.AccessDeniedHandler">
+        <!-- 錯誤訊息顯示頁面 -->
+        <beans:property name="errorPage" value="/WEB-INF/pages/errorPages/403.jsp" />
         <!-- 預設重導頁面 -->
         <beans:property name="defaultRedirectUrl" value="/" />
         <!-- 幾秒後重導 -->
