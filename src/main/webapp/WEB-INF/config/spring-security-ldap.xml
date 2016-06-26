@@ -35,7 +35,8 @@
         
         <form-login login-page="/loginPage" login-processing-url="/login" 
             authentication-failure-url="/loginPage?login_error=1" 
-            username-parameter="username" password-parameter="password" />
+            username-parameter="username" password-parameter="password" 
+            authentication-success-handler-ref="authenticationSuccessHandler" />
             
         <logout logout-success-url="/loginPage" />
 
@@ -73,5 +74,11 @@
         <beans:property name="defaultRedirectUrl" value="/" />
         <!-- 幾秒後重導 -->
         <beans:property name="timeToRedirect" value="5" />
+    </beans:bean>
+    
+    <!-- 登入成功 handler -->
+    <beans:bean id="authenticationSuccessHandler" class="com.bxf.hradmin.security.AuthenticationSuccessHandler">
+        <!-- 登入成功後跳轉的頁面 -->
+        <beans:property name="defaultTargetUrl" value="/" />
     </beans:bean>
 </beans:beans>

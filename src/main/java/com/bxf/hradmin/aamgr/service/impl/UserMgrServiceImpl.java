@@ -21,28 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.aamgr.repositories;
+package com.bxf.hradmin.aamgr.service.impl;
 
 import java.util.Date;
 
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.bxf.hradmin.aamgr.model.AppUser;
-import com.bxf.hradmin.common.repositories.IRepository;
+import com.bxf.hradmin.aamgr.repositories.UserRepository;
+import com.bxf.hradmin.aamgr.service.UserMgrService;
 
 /**
- * UserRepository
+ * UserMgrServiceImpl
  *
- * @since 2016-06-01
+ * @since 2016-06-26
  * @author Bo-Xuan Fan
  */
-public interface UserRepository extends IRepository<AppUser, Long> {
+@Service
+public class UserMgrServiceImpl implements UserMgrService {
 
-    AppUser findByAccount(String account);
+    @Autowired
+    private UserRepository userRepository;
 
-    @Modifying
-    @Query(value = "UPDATE APP_USER SET LAST_LOGIN_DT = :lastLoginDt WHERE ACCOUNT = :account", nativeQuery = true)
-    void updateUserLastLoginDtByAccount(@Param("lastLoginDt") Date loginDt, @Param("account") String account);
+    @Override
+    public void updateLastLoginDt(Date loginDt, String account) {
+        userRepository.updateUserLastLoginDtByAccount(loginDt, account);
+    }
 }

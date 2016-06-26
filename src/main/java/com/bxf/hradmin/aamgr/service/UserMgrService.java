@@ -21,28 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.aamgr.repositories;
+package com.bxf.hradmin.aamgr.service;
 
 import java.util.Date;
 
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import com.bxf.hradmin.aamgr.model.AppUser;
-import com.bxf.hradmin.common.repositories.IRepository;
-
 /**
- * UserRepository
+ * UserMgrService
  *
  * @since 2016-06-01
  * @author Bo-Xuan Fan
  */
-public interface UserRepository extends IRepository<AppUser, Long> {
+public interface UserMgrService {
 
-    AppUser findByAccount(String account);
-
-    @Modifying
-    @Query(value = "UPDATE APP_USER SET LAST_LOGIN_DT = :lastLoginDt WHERE ACCOUNT = :account", nativeQuery = true)
-    void updateUserLastLoginDtByAccount(@Param("lastLoginDt") Date loginDt, @Param("account") String account);
+    /**
+     * 更新登入時間
+     * @param loginDt
+     * @param account
+     */
+    void updateLastLoginDt(Date loginDt, String account);
 }

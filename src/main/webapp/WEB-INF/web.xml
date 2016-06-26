@@ -9,6 +9,9 @@
     </welcome-file-list>
 
     <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    <listener>
         <listener-class>com.bxf.hradmin.common.web.listener.ContextListener</listener-class>
     </listener>
 
