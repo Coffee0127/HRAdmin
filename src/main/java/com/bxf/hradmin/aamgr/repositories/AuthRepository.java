@@ -25,8 +25,6 @@ package com.bxf.hradmin.aamgr.repositories;
 
 import java.util.List;
 
-import org.springframework.data.repository.query.Param;
-
 /**
  * AuthRepository
  *
@@ -35,7 +33,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface AuthRepository {
 
-    List<Long> findRoleIdsByAccount(@Param("account") String account);
+    List<Long> findRoleIdsByAccount(String account);
 
-    List<Long> findFuncIdsByRoleId(@Param("roleId") Long roleId);
+    List<Long> findFuncIdsByRoleId(Long roleId);
 }
