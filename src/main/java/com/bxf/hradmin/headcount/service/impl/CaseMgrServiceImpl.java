@@ -148,7 +148,8 @@ public class CaseMgrServiceImpl implements CaseMgrService {
                 "requiredBeginDate", generateBeginDatetime(queryCond.getRequiredBeginDate())));
         queryParameters.add(new QueryParameter(QueryMode.LESS_EQUALS,
                 "requiredEndDate", generateEndDatetime(queryCond.getRequiredEndDate())));
-        return QueryParameterTransformer.generatePredicate(root, criteriaBuilder, queryParameters.toArray(new QueryParameter[0]));
+        QueryParameter[] queryParametersArr = new QueryParameter[queryParameters.size()];
+        return QueryParameterTransformer.generatePredicate(root, criteriaBuilder, queryParameters.toArray(queryParametersArr));
     }
 
     private Date generateBeginDatetime(Date date) {
