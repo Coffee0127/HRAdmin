@@ -137,7 +137,7 @@ public class CaseMgrServiceImpl implements CaseMgrService {
         queryParameters.add(new QueryParameter(QueryMode.GREATER_EQUALS,
                 "updateDatetime", generateBeginDatetime(queryCond.getBeginDatetime())));
         queryParameters.add(new QueryParameter(QueryMode.LESS_EQUALS,
-                "updateDatetime", generateBeginDatetime(queryCond.getEndDateTime())));
+                "updateDatetime", generateEndDatetime(queryCond.getEndDateTime())));
         queryParameters.add(new QueryParameter(QueryMode.EQUALS, "caseStatus", queryCond.getCaseStatus()));
         queryParameters.add(new QueryParameter(QueryMode.EQUALS, "dept", queryCond.getDept()));
         queryParameters.add(new QueryParameter(QueryMode.EQUALS, "unit", queryCond.getUnit()));
