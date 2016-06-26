@@ -48,14 +48,14 @@ sn: Hamilton
 uid: bob
 userPassword: bobspassword
 
-dn: cn=user,ou=people,dc=springframework,dc=org
+dn: cn=user1,ou=people,dc=springframework,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
 cn: User Hamilton
 sn: Hamilton
-uid: user
+uid: user1
 userPassword: {sha}xzuimCxVt+rQ5AmKkvcivbOjs9g=
 
 dn: cn=user2,ou=people,dc=springframework,dc=org
