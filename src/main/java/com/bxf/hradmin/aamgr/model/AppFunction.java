@@ -45,6 +45,9 @@ public class AppFunction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Long id;
+    /** 父功能代碼 */
+    @Column(name = "PARENT")
+    private String parent;
     /** 功能代碼 */
     @Column(name = "CODE")
     private String code;
@@ -54,6 +57,9 @@ public class AppFunction {
     /** 功能名稱 */
     @Column(name = "NAME")
     private String name;
+    /** 功能圖示 */
+    @Column(name = "ICON")
+    private String icon;
     /** 功能路徑 */
     @Column(name = "PATH")
     private String path;
@@ -64,6 +70,14 @@ public class AppFunction {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 
     public String getCode() {
@@ -88,6 +102,14 @@ public class AppFunction {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getPath() {

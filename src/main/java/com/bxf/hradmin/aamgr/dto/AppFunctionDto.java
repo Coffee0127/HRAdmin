@@ -25,6 +25,8 @@ package com.bxf.hradmin.aamgr.dto;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * AppFunctionDto
@@ -32,18 +34,22 @@ import java.io.Serializable;
  * @since 2016-06-18
  * @author Bo-Xuan Fan
  */
-public class AppFunctionDto implements Serializable {
+public class AppFunctionDto implements Comparable<AppFunctionDto>, Serializable {
 
     private static final long serialVersionUID = -5809712688334799038L;
 
     /** 功能編號 */
     private Long id;
+    /** 父功能代碼 */
+    private String parent;
     /** 功能代碼 */
     private String code;
     /** 功能階層 */
     private Integer level;
     /** 功能名稱 */
     private String name;
+    /** 功能圖示 */
+    private String icon;
     /** 功能路徑 */
     private String path;
 
@@ -53,6 +59,14 @@ public class AppFunctionDto implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 
     public String getCode() {
@@ -79,11 +93,52 @@ public class AppFunctionDto implements Serializable {
         this.name = name;
     }
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     public String getPath() {
         return path;
     }
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .append(id)
+            .append(parent)
+            .append(code)
+            .append(level)
+            .append(name)
+            .append(path)
+            .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AppFunctionDto) {
+            AppFunctionDto other = (AppFunctionDto) obj;
+            return new EqualsBuilder()
+                .append(id, other.id)
+                .append(parent, other.parent)
+                .append(code, other.code)
+                .append(level, other.level)
+                .append(name, other.name)
+                .append(path, other.path)
+                .isEquals();
+        }
+        return false;
+    }
+
+    @Override
+    public int compareTo(AppFunctionDto o) {
+        return this.getCode().compareTo(o.getCode());
     }
 }
