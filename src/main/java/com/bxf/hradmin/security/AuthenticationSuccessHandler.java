@@ -38,6 +38,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
+import com.bxf.hradmin.aamgr.service.AuthService;
 import com.bxf.hradmin.aamgr.service.UserMgrService;
 import com.bxf.hradmin.common.web.utils.UserUtils;
 
@@ -62,6 +63,9 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
     @Autowired
     private UserMgrService userService;
 
+    @Autowired
+    private AuthService authService;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
             HttpServletResponse response, Authentication authentication)
@@ -70,7 +74,8 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
         // update last login dt
         userService.updateLastLoginDt(new Date(), UserUtils.getUser().getAccount());
 
-        // TODO generate menu
+        // generate menu
+        request.getSession(false).setAttribute("rootMenu", authService.findMenu(UserUtils.getUser()));
 
         doRedirect(request, response);
     }

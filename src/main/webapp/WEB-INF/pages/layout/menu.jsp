@@ -1,4 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script>
 $(function() {
     var pathname = location.pathname;
@@ -30,6 +32,29 @@ $(function() {
         </div>
     </form>
     <ul class="nav menu">
+        <c:forEach var="menu" items="${rootMenu}">
+            <c:choose>
+                <c:when test="${empty menu.subMenuItems}">
+                    <li><a href="${ctxPath}${menu.url}"><svg class="glyph"><use xlink:href="${menu.icon}"></use></svg>${menu.desc}</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li class="parent">
+                        <a class="collapse collapsed" data-toggle="collapse" href="${menu.url}">
+                            <svg class="glyph"><use xlink:href="#stroked-chevron-right"></use></svg>${menu.desc}
+                        </a>
+                        <ul class="children collapse" id="${fn:replace(menu.url, '#', '')}">
+                            <c:forEach var="subMenu" items="${menu.subMenuItems}">
+                                <li><a href="${ctxPath}${subMenu.url}"><svg class="glyph"><use xlink:href="${subMenu.icon}"></use></svg>${subMenu.desc}</a></li>
+                            </c:forEach>
+                        </ul>
+                    </li>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+    </ul>
+
+    <%--
+    <ul class="nav menu">
         <li><a href="${ctxPath}/"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg>首頁</a></li>
         <li class="parent">
             <a class="collapse collapsed" data-toggle="collapse" href="#headcount-child">
@@ -46,9 +71,11 @@ $(function() {
             </a>
             <ul class="children collapse" id="cfg-child">
                 <li><a href="#"><svg class="glyph"><use xlink:href="#stroked-gear"></use></svg>參數設定</a></li>
-                <li><a href="#"><svg class="glyph"><use xlink:href="#stroked-male-user"></use></svg>使用者管理</a></li>
+                <li><a href="${ctxPath}/users/view"><svg class="glyph"><use xlink:href="#stroked-male-user"></use></svg>使用者管理</a></li>
             </ul>
         </li>
+    </ul>
+    --%>
         <%--
         <li><a href="widgets.html"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg> Widgets</a></li>
         <li><a href="charts.html"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Charts</a></li>
@@ -81,5 +108,4 @@ $(function() {
         <li role="presentation" class="divider"></li>
         <li><a href="${ctxPath}/loginPage"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
         --%>
-    </ul>
 </div><!--/.sidebar-->

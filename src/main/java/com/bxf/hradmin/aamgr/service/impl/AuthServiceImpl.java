@@ -24,18 +24,26 @@
 package com.bxf.hradmin.aamgr.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bxf.hradmin.aamgr.dto.AppAuthorizationDto;
+import com.bxf.hradmin.aamgr.dto.AppFunctionDto;
 import com.bxf.hradmin.aamgr.dto.AppRoleDto;
+import com.bxf.hradmin.aamgr.dto.IUser;
+import com.bxf.hradmin.aamgr.dto.MenuItem;
 import com.bxf.hradmin.aamgr.repositories.AuthRepository;
 import com.bxf.hradmin.aamgr.repositories.FunctionRepository;
 import com.bxf.hradmin.aamgr.repositories.RoleRepository;
 import com.bxf.hradmin.aamgr.service.AuthService;
 import com.bxf.hradmin.common.utils.BeanUtils;
+import com.bxf.hradmin.common.utils.SystemConfig;
 
 /**
  * AuthServiceImpl
@@ -45,6 +53,9 @@ import com.bxf.hradmin.common.utils.BeanUtils;
  */
 @Service
 public class AuthServiceImpl implements AuthService {
+
+    @Autowired
+    private SystemConfig config;
 
     @Autowired
     private AuthRepository authRepository;
@@ -67,5 +78,39 @@ public class AuthServiceImpl implements AuthService {
             authorizations.add(authorization);
         }
         return authorizations;
+    }
+
+    @Override
+    public List<MenuItem> findMenu(IUser user) {
+        Set<AppFunctionDto> functions = findUserFunctions(user);
+        List<MenuItem> menus = new ArrayList<>();
+        if (Boolean.valueOf(config.getProperty("menu.index.show", "false"))) {
+            menus.add(new MenuItem(config.getProperty("menu.index.icon"), config.getProperty("menu.index.desc"), config.getProperty("menu.index.url")));
+        }
+
+        Map<String, MenuItem> menuContainer = new HashMap<>();
+        for (AppFunctionDto function : functions) {
+            MenuItem menu = new MenuItem(function.getIcon(), function.getName(), function.getPath());
+            if (function.getParent().equals(function.getCode())) {
+                menuContainer.put(function.getCode(), menu);
+                menus.add(menu);
+                continue;
+            }
+            menuContainer.get(function.getParent()).addSubMenuItem(menu);
+        }
+        return menus;
+    }
+
+    private Set<AppFunctionDto> findUserFunctions(IUser user) {
+        Set<AppFunctionDto> functions = new TreeSet<>();
+        @SuppressWarnings("unchecked")
+        List<AppAuthorizationDto> authorites = (List<AppAuthorizationDto>) user.getAuthorities();
+        for (AppAuthorizationDto authorization : authorites) {
+            for (Long funcId : authRepository.findFuncIdsByRoleId(authorization.getRole().getId())) {
+                AppFunctionDto function = BeanUtils.copyProperties(AppFunctionDto.class, funcRepository.findOne(funcId));
+                functions.add(function);
+            }
+        }
+        return functions;
     }
 }

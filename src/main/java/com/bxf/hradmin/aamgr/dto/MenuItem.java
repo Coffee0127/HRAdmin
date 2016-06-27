@@ -21,23 +21,65 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.bxf.hradmin.aamgr.service;
+package com.bxf.hradmin.aamgr.dto;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import com.bxf.hradmin.aamgr.dto.AppAuthorizationDto;
-import com.bxf.hradmin.aamgr.dto.IUser;
-import com.bxf.hradmin.aamgr.dto.MenuItem;
-
 /**
- * AuthService
+ * MenuItem
  *
- * @since 2016-06-18
+ * @since 2016-06-26
  * @author Bo-Xuan Fan
  */
-public interface AuthService {
+public class MenuItem {
 
-    List<AppAuthorizationDto> findAuthorization(String userAccount);
+    private String icon;
+    private String desc;
+    private String url;
+    private List<MenuItem> subMenuItems = new ArrayList<>();
 
-    List<MenuItem> findMenu(IUser user);
+    public MenuItem(String icon, String desc, String url) {
+        super();
+        this.icon = icon;
+        this.desc = desc;
+        this.url = url;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public List<MenuItem> getSubMenuItems() {
+        return subMenuItems;
+    }
+
+    public void addSubMenuItems(Collection<? extends MenuItem> menuItems) {
+        this.subMenuItems.addAll(menuItems);
+    }
+
+    public void addSubMenuItem(MenuItem menuItem) {
+        this.subMenuItems.add(menuItem);
+    }
 }
