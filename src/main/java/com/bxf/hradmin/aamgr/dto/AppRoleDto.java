@@ -24,7 +24,6 @@
 package com.bxf.hradmin.aamgr.dto;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * AppRoleDto
@@ -42,8 +41,6 @@ public class AppRoleDto implements Serializable {
     private String code;
     /** 角色敘述編號 */
     private String desc;
-    /** 對應功能 */
-    private List<AppFunctionDto> functions;
 
     public Long getId() {
         return id;
@@ -67,13 +64,5 @@ public class AppRoleDto implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public List<AppFunctionDto> getFunctions() {
-        return functions;
-    }
-
-    public void setFunctions(List<AppFunctionDto> functions) {
-        this.functions = functions;
     }
 }
