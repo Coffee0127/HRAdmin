@@ -9,4 +9,17 @@
     <context:component-scan base-package="com.bxf.hradmin" />
 
     <import resource="jpa-config.xml" />
+    
+    <!-- System config -->
+    <bean id="systemConfig" class="com.bxf.hradmin.common.utils.SystemConfig">
+        <constructor-arg name="properties">
+            <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+                <property name="locations">
+                    <list>
+                        <value>classpath:config.properties</value>
+                    </list>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
 </beans>
