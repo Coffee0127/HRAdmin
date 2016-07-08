@@ -43,7 +43,7 @@ import com.bxf.hradmin.aamgr.repositories.FunctionRepository;
 import com.bxf.hradmin.aamgr.repositories.RoleRepository;
 import com.bxf.hradmin.aamgr.service.AuthService;
 import com.bxf.hradmin.common.utils.BeanUtils;
-import com.bxf.hradmin.common.utils.SystemConfig;
+import com.bxf.hradmin.common.utils.PropertiesUtils;
 
 /**
  * AuthServiceImpl
@@ -55,7 +55,7 @@ import com.bxf.hradmin.common.utils.SystemConfig;
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    private SystemConfig config;
+    private PropertiesUtils config;
 
     @Autowired
     private AuthRepository authRepository;

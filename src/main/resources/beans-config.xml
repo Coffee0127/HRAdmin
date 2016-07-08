@@ -10,8 +10,8 @@
 
     <import resource="jpa-config.xml" />
     
-    <!-- System config -->
-    <bean id="systemConfig" class="com.bxf.hradmin.common.utils.SystemConfig">
+    <!-- load properties -->
+    <bean id="propertiesUtils" class="com.bxf.hradmin.common.utils.PropertiesUtils">
         <constructor-arg name="properties">
             <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
                 <property name="locations">

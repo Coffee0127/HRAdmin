@@ -26,16 +26,16 @@ package com.bxf.hradmin.common.utils;
 import java.util.Properties;
 
 /**
- * PropertiesUtils
+ * load properties
  *
  * @since 2016-06-27
  * @author Bo-Xuan Fan
  */
-public class SystemConfig {
+public class PropertiesUtils {
 
     private Properties properties;
 
-    public SystemConfig(Properties properties) {
+    public PropertiesUtils(Properties properties) {
         super();
         this.properties = properties;
     }
