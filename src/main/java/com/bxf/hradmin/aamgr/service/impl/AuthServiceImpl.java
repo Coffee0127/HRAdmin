@@ -55,7 +55,7 @@ import com.bxf.hradmin.common.utils.PropertiesUtils;
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    private PropertiesUtils config;
+    private PropertiesUtils propertiesUtils;
 
     @Autowired
     private AuthRepository authRepository;
@@ -84,8 +84,8 @@ public class AuthServiceImpl implements AuthService {
     public List<MenuItem> findMenu(IUser user) {
         Set<AppFunctionDto> functions = findUserFunctions(user);
         List<MenuItem> menus = new ArrayList<>();
-        if (Boolean.valueOf(config.getProperty("menu.index.show", "false"))) {
-            menus.add(new MenuItem(config.getProperty("menu.index.icon"), config.getProperty("menu.index.desc"), config.getProperty("menu.index.url")));
+        if (Boolean.valueOf(propertiesUtils.getProperty("menu.index.show", "false"))) {
+            menus.add(new MenuItem(propertiesUtils.getProperty("menu.index.icon"), propertiesUtils.getProperty("menu.index.desc"), propertiesUtils.getProperty("menu.index.url")));
         }
 
         Map<String, MenuItem> menuContainer = new HashMap<>();
